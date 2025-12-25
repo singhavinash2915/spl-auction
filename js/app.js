@@ -259,12 +259,16 @@ function selectPlayerForAuction(player) {
     currentPlayer = player;
     currentBid = player.basePrice;
 
-    // Update UI
-    document.getElementById('currentPlayerAvatar').innerHTML = `<span>${getInitials(player.name)}</span>`;
+    // Update UI - Show photo if available, otherwise show initials
+    if (player.photo) {
+        document.getElementById('currentPlayerAvatar').innerHTML = `<img src="${player.photo}" alt="${player.name}" onerror="this.parentElement.innerHTML='<span>${getInitials(player.name)}</span>'">`;
+    } else {
+        document.getElementById('currentPlayerAvatar').innerHTML = `<span>${getInitials(player.name)}</span>`;
+    }
     document.getElementById('currentPlayerName').textContent = player.name;
-    document.getElementById('currentPlayerFlat').textContent = player.flatNo;
+    document.getElementById('currentPlayerFlat').textContent = player.flatNo || '-';
     document.getElementById('currentPlayerRole').textContent = player.role;
-    document.getElementById('currentPlayerAge').textContent = `Age: ${player.age}`;
+    document.getElementById('currentPlayerAge').textContent = player.age ? `Age: ${player.age}` : '';
     document.getElementById('currentPlayerBatting').textContent = player.battingStyle;
     document.getElementById('currentPlayerBowling').textContent = player.bowlingStyle;
     document.getElementById('basePrice').textContent = `₹${player.basePrice}`;
@@ -600,8 +604,8 @@ function renderAuctionPlayers() {
         <div class="player-mini-card ${player.status !== 'available' ? 'sold' : ''}"
              data-id="${player.id}"
              onclick="selectPlayerForAuction(players.find(p => p.id === ${player.id}))">
-            <div class="mini-avatar" style="background: ${getAvatarColor(player.role)}">
-                ${getInitials(player.name)}
+            <div class="mini-avatar" style="background: ${player.photo ? 'transparent' : getAvatarColor(player.role)}">
+                ${player.photo ? `<img src="${player.photo}" alt="${player.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${getInitials(player.name)}'">` : getInitials(player.name)}
             </div>
             <div class="mini-name">${player.name}</div>
             <div class="mini-role">${player.role}</div>
@@ -647,14 +651,14 @@ function renderPlayers() {
         return `
             <div class="player-card ${player.status === 'sold' ? 'sold' : ''}">
                 <div class="player-card-header">
-                    <div class="player-image" style="background: ${getAvatarColor(player.role)}">
-                        ${getInitials(player.name)}
+                    <div class="player-image" style="background: ${player.photo ? 'transparent' : getAvatarColor(player.role)}">
+                        ${player.photo ? `<img src="${player.photo}" alt="${player.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${getInitials(player.name)}'">` : getInitials(player.name)}
                     </div>
                     <div class="player-info">
                         <h3 class="player-name">${player.name}</h3>
                         <div class="player-flat">
                             <span>🏠</span>
-                            <span>${player.flatNo}</span>
+                            <span>${player.flatNo || '-'}</span>
                         </div>
                     </div>
                     <span class="player-role-badge ${roleClass}">${player.role}</span>
