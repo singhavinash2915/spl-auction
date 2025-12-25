@@ -1,51 +1,49 @@
-ID,Name,Role,Batting Style,Bowling Style,Country,Age,Matches,Runs,Wickets,Base Price (INR),Status
-1,Virat Kohli,Batsman,Right-hand bat,Right-arm medium,India,35,275,12898,4,20000000,available
-2,Rohit Sharma,Batsman,Right-hand bat,Right-arm off break,India,37,264,10867,8,18000000,available
-3,Jasprit Bumrah,Bowler,Right-hand bat,Right-arm fast,India,30,89,156,159,18000000,available
-4,Pat Cummins,Bowler,Right-hand bat,Right-arm fast,Australia,31,108,1245,195,17000000,available
-5,Kane Williamson,Batsman,Right-hand bat,Right-arm off break,New Zealand,34,167,7500,37,15000000,available
-6,Jos Buttler,Wicketkeeper,Right-hand bat,None,England,34,182,5245,0,14000000,available
-7,Rashid Khan,Bowler,Right-hand bat,Leg break googly,Afghanistan,26,116,876,189,16000000,available
-8,Ben Stokes,All-rounder,Left-hand bat,Right-arm fast-medium,England,33,115,3245,82,17000000,available
-9,Quinton de Kock,Wicketkeeper,Left-hand bat,None,South Africa,32,158,5845,0,13000000,available
-10,Shakib Al Hasan,All-rounder,Left-hand bat,Slow left-arm orthodox,Bangladesh,37,246,7524,317,12000000,available
-11,Babar Azam,Batsman,Right-hand bat,Right-arm off break,Pakistan,29,119,5625,0,16000000,available
-12,Trent Boult,Bowler,Right-hand bat,Left-arm fast-medium,New Zealand,35,108,245,195,12000000,available
-13,Hardik Pandya,All-rounder,Right-hand bat,Right-arm medium-fast,India,31,92,1876,72,15000000,available
-14,Mitchell Starc,Bowler,Left-hand bat,Left-arm fast,Australia,34,115,876,227,15000000,available
-15,David Warner,Batsman,Left-hand bat,Leg break,Australia,38,161,6932,0,12000000,available
-16,KL Rahul,Wicketkeeper,Right-hand bat,None,India,32,72,2945,0,14000000,available
-17,Kagiso Rabada,Bowler,Left-hand bat,Right-arm fast,South Africa,29,98,456,175,14000000,available
-18,Glenn Maxwell,All-rounder,Right-hand bat,Right-arm off break,Australia,36,145,3876,56,13000000,available
-19,Suryakumar Yadav,Batsman,Right-hand bat,Right-arm medium,India,34,68,2456,0,14000000,available
-20,Mohammed Shami,Bowler,Right-hand bat,Right-arm fast-medium,India,34,101,324,195,13000000,available
-21,Ravindra Jadeja,All-rounder,Left-hand bat,Slow left-arm orthodox,India,36,197,2876,245,16000000,available
-22,Steve Smith,Batsman,Right-hand bat,Leg break googly,Australia,35,146,5876,28,14000000,available
-23,Shaheen Afridi,Bowler,Left-hand bat,Left-arm fast,Pakistan,24,56,124,115,15000000,available
-24,Travis Head,Batsman,Left-hand bat,Right-arm off break,Australia,30,45,1876,5,12000000,available
-25,Rishabh Pant,Wicketkeeper,Left-hand bat,None,India,27,54,2145,0,16000000,available
-26,Marnus Labuschagne,Batsman,Right-hand bat,Leg break googly,Australia,30,52,2654,8,13000000,available
-27,Shubman Gill,Batsman,Right-hand bat,None,India,25,38,1876,0,14000000,available
-28,Josh Hazlewood,Bowler,Left-hand bat,Right-arm fast-medium,Australia,33,67,245,145,12000000,available
-29,Kuldeep Yadav,Bowler,Left-hand bat,Slow left-arm chinaman,India,29,56,156,105,11000000,available
-30,Aiden Markram,Batsman,Right-hand bat,Right-arm off break,South Africa,30,78,2456,15,11000000,available
-31,Mohammad Rizwan,Wicketkeeper,Right-hand bat,None,Pakistan,32,89,3245,0,12000000,available
-32,Marco Jansen,All-rounder,Left-hand bat,Left-arm fast-medium,South Africa,24,28,456,68,10000000,available
-33,Devon Conway,Batsman,Left-hand bat,Right-arm medium,New Zealand,33,34,1654,0,11000000,available
-34,Lockie Ferguson,Bowler,Right-hand bat,Right-arm fast,New Zealand,33,45,67,78,10000000,available
-35,Mitchell Marsh,All-rounder,Right-hand bat,Right-arm medium-fast,Australia,33,89,2134,45,11000000,available
-36,Yashasvi Jaiswal,Batsman,Left-hand bat,Leg break,India,22,18,1245,0,12000000,available
-37,Adam Zampa,Bowler,Right-hand bat,Leg break googly,Australia,32,98,245,145,10000000,available
-38,Wanindu Hasaranga,All-rounder,Right-hand bat,Leg break googly,Sri Lanka,27,67,567,98,12000000,available
-39,Ishan Kishan,Wicketkeeper,Left-hand bat,None,India,26,34,1234,0,10000000,available
-40,Heinrich Klaasen,Wicketkeeper,Right-hand bat,None,South Africa,33,56,1876,0,11000000,available
-41,Mark Wood,Bowler,Right-hand bat,Right-arm fast,England,35,45,178,89,11000000,available
-42,Cameron Green,All-rounder,Right-hand bat,Right-arm fast-medium,Australia,25,34,987,45,13000000,available
-43,Ravichandran Ashwin,All-rounder,Right-hand bat,Right-arm off break,India,38,116,1876,156,10000000,available
-44,Daryl Mitchell,All-rounder,Right-hand bat,Right-arm medium,New Zealand,33,54,1654,12,10000000,available
-45,Reece Topley,Bowler,Right-hand bat,Left-arm fast-medium,England,30,34,45,56,8000000,available
-46,Sanju Samson,Wicketkeeper,Right-hand bat,None,India,30,28,876,0,12000000,available
-47,Anrich Nortje,Bowler,Right-hand bat,Right-arm fast,South Africa,31,34,67,56,10000000,available
-48,Nicholas Pooran,Wicketkeeper,Left-hand bat,None,West Indies,29,78,1876,0,11000000,available
-49,Andre Russell,All-rounder,Right-hand bat,Right-arm fast,West Indies,36,89,1567,67,12000000,available
-50,Kieron Pollard,All-rounder,Right-hand bat,Right-arm medium,West Indies,37,145,3456,78,9000000,available
+ID,Name,Flat No,Role,Batting Style,Bowling Style,Age,Base Price,Status
+1,Rajesh Kumar,A-101,Batsman,Right-hand bat,Right-arm medium,32,500,available
+2,Amit Sharma,A-205,Bowler,Right-hand bat,Right-arm fast,28,400,available
+3,Suresh Patel,B-102,All-rounder,Left-hand bat,Left-arm spin,35,600,available
+4,Vikram Singh,B-304,Batsman,Right-hand bat,None,29,450,available
+5,Deepak Verma,C-101,Wicketkeeper,Right-hand bat,None,27,500,available
+6,Manish Gupta,C-203,Bowler,Right-hand bat,Right-arm off spin,31,350,available
+7,Arun Reddy,D-102,Batsman,Left-hand bat,None,26,400,available
+8,Karthik Iyer,D-305,All-rounder,Right-hand bat,Right-arm medium,33,550,available
+9,Rahul Menon,E-101,Bowler,Right-hand bat,Left-arm fast,24,450,available
+10,Sanjay Nair,E-204,Batsman,Right-hand bat,Leg spin,30,400,available
+11,Pradeep Joshi,F-103,All-rounder,Right-hand bat,Right-arm medium fast,28,500,available
+12,Nikhil Desai,F-302,Wicketkeeper,Left-hand bat,None,25,450,available
+13,Ajay Kulkarni,G-101,Bowler,Right-hand bat,Right-arm fast,29,400,available
+14,Vinod Rao,G-205,Batsman,Right-hand bat,None,34,350,available
+15,Harish Pillai,H-102,All-rounder,Left-hand bat,Left-arm spin,27,500,available
+16,Manoj Krishnan,H-304,Bowler,Right-hand bat,Right-arm off spin,31,350,available
+17,Ravi Shankar,A-103,Batsman,Right-hand bat,Right-arm medium,26,400,available
+18,Ganesh Hegde,A-302,Wicketkeeper,Right-hand bat,None,29,450,available
+19,Prakash Shetty,B-105,Bowler,Left-hand bat,Left-arm fast,23,400,available
+20,Mohan Das,B-401,All-rounder,Right-hand bat,Right-arm medium,32,500,available
+21,Satish Agarwal,C-104,Batsman,Right-hand bat,None,28,350,available
+22,Vivek Mehta,C-301,Bowler,Right-hand bat,Leg spin,30,400,available
+23,Sunil Kapoor,D-103,All-rounder,Left-hand bat,Left-arm spin,27,550,available
+24,Ashok Bansal,D-402,Batsman,Right-hand bat,Right-arm off spin,35,300,available
+25,Dinesh Saxena,E-102,Wicketkeeper,Right-hand bat,None,26,450,available
+26,Ramesh Tiwari,E-303,Bowler,Right-hand bat,Right-arm fast,24,400,available
+27,Naresh Yadav,F-104,Batsman,Left-hand bat,None,29,350,available
+28,Girish Pandey,F-401,All-rounder,Right-hand bat,Right-arm medium fast,31,500,available
+29,Umesh Dubey,G-103,Bowler,Right-hand bat,Right-arm off spin,28,350,available
+30,Tushar Mishra,G-302,Batsman,Right-hand bat,Leg spin,25,400,available
+31,Anand Shukla,H-105,Wicketkeeper,Right-hand bat,None,27,450,available
+32,Pankaj Awasthi,H-401,All-rounder,Left-hand bat,Left-arm fast,30,550,available
+33,Lokesh Tripathi,A-104,Bowler,Right-hand bat,Right-arm fast,26,400,available
+34,Jitendra Chauhan,A-401,Batsman,Right-hand bat,None,33,350,available
+35,Hemant Rawat,B-106,All-rounder,Right-hand bat,Right-arm medium,28,500,available
+36,Yogesh Bhatt,B-403,Bowler,Left-hand bat,Left-arm spin,24,400,available
+37,Sachin Jain,C-105,Batsman,Right-hand bat,Right-arm off spin,31,400,available
+38,Rohit Goyal,C-402,Wicketkeeper,Left-hand bat,None,25,450,available
+39,Mukesh Arora,D-104,Bowler,Right-hand bat,Right-arm medium fast,29,400,available
+40,Tarun Malhotra,D-501,All-rounder,Right-hand bat,Leg spin,27,500,available
+41,Akhil Bhatia,E-103,Batsman,Left-hand bat,None,23,350,available
+42,Dhruv Khanna,E-402,Bowler,Right-hand bat,Right-arm fast,26,450,available
+43,Nitin Thakur,F-105,All-rounder,Right-hand bat,Right-arm off spin,32,500,available
+44,Kunal Bhardwaj,F-502,Wicketkeeper,Right-hand bat,None,28,400,available
+45,Varun Chauhan,G-104,Batsman,Right-hand bat,Right-arm medium,30,350,available
+46,Siddharth Goel,G-401,Bowler,Left-hand bat,Left-arm fast,25,450,available
+47,Abhishek Mittal,H-106,All-rounder,Right-hand bat,Right-arm medium fast,29,550,available
+48,Gaurav Luthra,H-502,Batsman,Left-hand bat,Leg spin,27,400,available

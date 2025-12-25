@@ -1,0 +1,158 @@
+[
+  {
+    "id": 1,
+    "name": "Sangria Strikers",
+    "shortName": "SS",
+    "color": "#ef4444",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Aditya Sharma", "flatNo": "A-501", "role": "Batsman", "captain": true},
+      {"name": "Rohan Mehra", "flatNo": "A-502", "role": "Bowler", "captain": false},
+      {"name": "Vishal Thakur", "flatNo": "A-503", "role": "All-rounder", "captain": false}
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Megapolic Mavericks",
+    "shortName": "MM",
+    "color": "#3b82f6",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Akash Gupta", "flatNo": "B-501", "role": "Batsman", "captain": true},
+      {"name": "Sumit Verma", "flatNo": "B-502", "role": "Wicketkeeper", "captain": false},
+      {"name": "Naveen Rao", "flatNo": "B-503", "role": "Bowler", "captain": false}
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Tower Titans",
+    "shortName": "TT",
+    "color": "#10b981",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Rajat Khanna", "flatNo": "C-501", "role": "All-rounder", "captain": true},
+      {"name": "Ankit Malhotra", "flatNo": "C-502", "role": "Batsman", "captain": false},
+      {"name": "Piyush Sharma", "flatNo": "C-503", "role": "Bowler", "captain": false}
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Royal Riders",
+    "shortName": "RR",
+    "color": "#8b5cf6",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Harsh Agarwal", "flatNo": "D-501", "role": "Batsman", "captain": true},
+      {"name": "Mohit Saxena", "flatNo": "D-502", "role": "All-rounder", "captain": false},
+      {"name": "Shivam Kapoor", "flatNo": "D-503", "role": "Bowler", "captain": false}
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Phoenix Force",
+    "shortName": "PF",
+    "color": "#f59e0b",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Arjun Reddy", "flatNo": "E-501", "role": "Wicketkeeper", "captain": true},
+      {"name": "Karan Singh", "flatNo": "E-502", "role": "Batsman", "captain": false},
+      {"name": "Deepesh Kumar", "flatNo": "E-503", "role": "All-rounder", "captain": false}
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Storm Breakers",
+    "shortName": "SB",
+    "color": "#06b6d4",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Vikas Yadav", "flatNo": "F-501", "role": "Bowler", "captain": true},
+      {"name": "Rahul Bhatt", "flatNo": "F-502", "role": "Batsman", "captain": false},
+      {"name": "Saurabh Jain", "flatNo": "F-503", "role": "All-rounder", "captain": false}
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Thunder Hawks",
+    "shortName": "TH",
+    "color": "#ec4899",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Neeraj Pandey", "flatNo": "G-501", "role": "Batsman", "captain": true},
+      {"name": "Ashish Dubey", "flatNo": "G-502", "role": "Bowler", "captain": false},
+      {"name": "Gaurav Mishra", "flatNo": "G-503", "role": "Wicketkeeper", "captain": false}
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Blazing Bulls",
+    "shortName": "BB",
+    "color": "#84cc16",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Pranav Shukla", "flatNo": "H-501", "role": "All-rounder", "captain": true},
+      {"name": "Yash Tiwari", "flatNo": "H-502", "role": "Batsman", "captain": false},
+      {"name": "Chirag Awasthi", "flatNo": "H-503", "role": "Bowler", "captain": false}
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Golden Eagles",
+    "shortName": "GE",
+    "color": "#eab308",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Aman Tripathi", "flatNo": "A-601", "role": "Batsman", "captain": true},
+      {"name": "Rishi Chauhan", "flatNo": "A-602", "role": "Bowler", "captain": false},
+      {"name": "Tanmay Rawat", "flatNo": "A-603", "role": "All-rounder", "captain": false}
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Silver Sharks",
+    "shortName": "SH",
+    "color": "#64748b",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Vaibhav Bhatt", "flatNo": "B-601", "role": "Wicketkeeper", "captain": true},
+      {"name": "Utkarsh Jain", "flatNo": "B-602", "role": "Batsman", "captain": false},
+      {"name": "Lakshay Goyal", "flatNo": "B-603", "role": "Bowler", "captain": false}
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Dynamo Kings",
+    "shortName": "DK",
+    "color": "#a855f7",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Ishaan Arora", "flatNo": "C-601", "role": "Batsman", "captain": true},
+      {"name": "Arnav Malhotra", "flatNo": "C-602", "role": "All-rounder", "captain": false},
+      {"name": "Parth Bhatia", "flatNo": "C-603", "role": "Bowler", "captain": false}
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Warrior Lions",
+    "shortName": "WL",
+    "color": "#f97316",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Sahil Khanna", "flatNo": "D-601", "role": "All-rounder", "captain": true},
+      {"name": "Divyanshu Goel", "flatNo": "D-602", "role": "Batsman", "captain": false},
+      {"name": "Shashank Mittal", "flatNo": "D-603", "role": "Bowler", "captain": false}
+    ]
+  }
+]

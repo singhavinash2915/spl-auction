@@ -1,46 +1,71 @@
 // ========================================
-// SPL Auction - Main JavaScript
+// SPL Auction - Sangria Premier League
 // ========================================
 
 // Global Variables
 let players = [];
+let teams = [];
 let filteredPlayers = [];
 let currentFilter = 'all';
-let currentSort = 'name';
 let searchQuery = '';
+let currentPlayer = null;
+let currentBid = 0;
+
+// Local Storage Keys
+const STORAGE_KEYS = {
+    PLAYERS: 'spl_players',
+    TEAMS: 'spl_teams'
+};
 
 // ========================================
 // Initialize Application
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
-    loadPlayers();
+    loadData();
     initEventListeners();
-    startCountdown();
 });
 
 // ========================================
-// Load Players Data
+// Load Data
 // ========================================
-async function loadPlayers() {
-    try {
-        const response = await fetch('data/players.json');
-        players = await response.json();
-        filteredPlayers = [...players];
-        renderPlayers();
-        updateStats();
-    } catch (error) {
-        console.error('Error loading players:', error);
-        // Fallback: try relative path
+async function loadData() {
+    // Try to load from localStorage first
+    const savedPlayers = localStorage.getItem(STORAGE_KEYS.PLAYERS);
+    const savedTeams = localStorage.getItem(STORAGE_KEYS.TEAMS);
+
+    if (savedPlayers && savedTeams) {
+        players = JSON.parse(savedPlayers);
+        teams = JSON.parse(savedTeams);
+        initializeApp();
+    } else {
+        // Load from JSON files
         try {
-            const response = await fetch('./data/players.json');
-            players = await response.json();
-            filteredPlayers = [...players];
-            renderPlayers();
-            updateStats();
-        } catch (e) {
-            console.error('Failed to load players:', e);
+            const [playersRes, teamsRes] = await Promise.all([
+                fetch('data/players.json'),
+                fetch('data/teams.json')
+            ]);
+            players = await playersRes.json();
+            teams = await teamsRes.json();
+            saveToLocalStorage();
+            initializeApp();
+        } catch (error) {
+            console.error('Error loading data:', error);
         }
     }
+}
+
+function initializeApp() {
+    filteredPlayers = [...players];
+    renderPlayers();
+    renderTeams();
+    renderAuctionPlayers();
+    populateTeamSelect();
+    updateStats();
+}
+
+function saveToLocalStorage() {
+    localStorage.setItem(STORAGE_KEYS.PLAYERS, JSON.stringify(players));
+    localStorage.setItem(STORAGE_KEYS.TEAMS, JSON.stringify(teams));
 }
 
 // ========================================
@@ -65,12 +90,19 @@ function initEventListeners() {
         });
     });
 
-    // Sort Select
-    const sortSelect = document.getElementById('sortSelect');
-    sortSelect.addEventListener('change', (e) => {
-        currentSort = e.target.value;
-        filterAndRenderPlayers();
-    });
+    // Auction Controls
+    document.getElementById('startAuctionBtn').addEventListener('click', startAuction);
+    document.getElementById('resetAuctionBtn').addEventListener('click', resetAuction);
+
+    // Bid Buttons
+    document.getElementById('bid50').addEventListener('click', () => addBid(50));
+    document.getElementById('bid100').addEventListener('click', () => addBid(100));
+    document.getElementById('bid200').addEventListener('click', () => addBid(200));
+    document.getElementById('bid500').addEventListener('click', () => addBid(500));
+
+    // Sold/Unsold Buttons
+    document.getElementById('soldBtn').addEventListener('click', markAsSold);
+    document.getElementById('unsoldBtn').addEventListener('click', markAsUnsold);
 
     // Modal Close
     const modal = document.getElementById('playerModal');
@@ -80,7 +112,6 @@ function initEventListeners() {
     modalClose.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
 
-    // Escape key to close modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
@@ -98,305 +129,376 @@ function initEventListeners() {
             }
         });
     });
+}
 
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const nav = document.querySelector('.nav');
+// ========================================
+// Auction Functions
+// ========================================
+function startAuction() {
+    document.getElementById('auctionArena').style.display = 'block';
+    document.getElementById('startAuctionBtn').textContent = 'Auction Started';
+    document.getElementById('startAuctionBtn').disabled = true;
 
-    mobileMenuBtn.addEventListener('click', () => {
-        nav.classList.toggle('active');
-        mobileMenuBtn.classList.toggle('active');
+    // Select first available player
+    const availablePlayer = players.find(p => p.status === 'available');
+    if (availablePlayer) {
+        selectPlayerForAuction(availablePlayer);
+    }
+}
+
+function resetAuction() {
+    if (confirm('Are you sure you want to reset all auction data? This will mark all players as available and reset team rosters.')) {
+        // Reset players
+        players.forEach(p => {
+            p.status = 'available';
+            p.soldTo = null;
+            p.soldPrice = null;
+        });
+
+        // Reset teams - keep only original 3 players
+        teams.forEach(team => {
+            team.budget = 3000;
+            team.players = team.players.slice(0, 3);
+        });
+
+        saveToLocalStorage();
+
+        // Reset UI
+        document.getElementById('auctionArena').style.display = 'none';
+        document.getElementById('startAuctionBtn').textContent = '▶ Start Auction';
+        document.getElementById('startAuctionBtn').disabled = false;
+        currentPlayer = null;
+        currentBid = 0;
+
+        initializeApp();
+    }
+}
+
+function selectPlayerForAuction(player) {
+    if (player.status !== 'available') return;
+
+    currentPlayer = player;
+    currentBid = player.basePrice;
+
+    // Update UI
+    document.getElementById('currentPlayerAvatar').innerHTML = `<span>${getInitials(player.name)}</span>`;
+    document.getElementById('currentPlayerName').textContent = player.name;
+    document.getElementById('currentPlayerFlat').textContent = player.flatNo;
+    document.getElementById('currentPlayerRole').textContent = player.role;
+    document.getElementById('currentPlayerAge').textContent = `Age: ${player.age}`;
+    document.getElementById('currentPlayerBatting').textContent = player.battingStyle;
+    document.getElementById('currentPlayerBowling').textContent = player.bowlingStyle;
+    document.getElementById('basePrice').textContent = `₹${player.basePrice}`;
+    document.getElementById('currentBid').textContent = `₹${currentBid}`;
+
+    // Highlight selected player in grid
+    document.querySelectorAll('.player-mini-card').forEach(card => {
+        card.classList.remove('selected');
+        if (parseInt(card.dataset.id) === player.id) {
+            card.classList.add('selected');
+        }
+    });
+
+    // Show auction arena
+    document.getElementById('auctionArena').style.display = 'block';
+}
+
+function addBid(amount) {
+    if (!currentPlayer) return;
+    currentBid += amount;
+    document.getElementById('currentBid').textContent = `₹${currentBid}`;
+}
+
+function markAsSold() {
+    if (!currentPlayer) {
+        alert('Please select a player first!');
+        return;
+    }
+
+    const teamId = document.getElementById('buyingTeam').value;
+    if (!teamId) {
+        alert('Please select a team!');
+        return;
+    }
+
+    const team = teams.find(t => t.id === parseInt(teamId));
+    if (!team) return;
+
+    // Check if team has budget
+    if (team.budget < currentBid) {
+        alert(`${team.name} doesn't have enough budget! Available: ₹${team.budget}`);
+        return;
+    }
+
+    // Check if team already has 7 players
+    if (team.players.length >= 7) {
+        alert(`${team.name} already has 7 players!`);
+        return;
+    }
+
+    // Update player
+    currentPlayer.status = 'sold';
+    currentPlayer.soldTo = team.id;
+    currentPlayer.soldPrice = currentBid;
+
+    // Update team
+    team.budget -= currentBid;
+    team.players.push({
+        name: currentPlayer.name,
+        flatNo: currentPlayer.flatNo,
+        role: currentPlayer.role,
+        captain: false,
+        soldPrice: currentBid
+    });
+
+    saveToLocalStorage();
+
+    // Show sold animation
+    showSoldAnimation(currentPlayer, team, currentBid);
+
+    // Reset and move to next player
+    setTimeout(() => {
+        hideSoldAnimation();
+        renderPlayers();
+        renderTeams();
+        renderAuctionPlayers();
+        populateTeamSelect();
+
+        // Select next available player
+        const nextPlayer = players.find(p => p.status === 'available');
+        if (nextPlayer) {
+            selectPlayerForAuction(nextPlayer);
+        } else {
+            document.getElementById('auctionArena').style.display = 'none';
+            alert('Auction completed! All players have been sold or marked unsold.');
+        }
+    }, 3000);
+}
+
+function markAsUnsold() {
+    if (!currentPlayer) {
+        alert('Please select a player first!');
+        return;
+    }
+
+    currentPlayer.status = 'unsold';
+    saveToLocalStorage();
+
+    renderPlayers();
+    renderAuctionPlayers();
+
+    // Select next available player
+    const nextPlayer = players.find(p => p.status === 'available');
+    if (nextPlayer) {
+        selectPlayerForAuction(nextPlayer);
+    } else {
+        document.getElementById('auctionArena').style.display = 'none';
+        alert('Auction completed! All players have been processed.');
+    }
+}
+
+function showSoldAnimation(player, team, price) {
+    document.getElementById('soldPlayerName').textContent = player.name;
+    document.getElementById('soldTeamName').textContent = team.name;
+    document.getElementById('soldPrice').textContent = `₹${price}`;
+    document.getElementById('soldOverlay').classList.add('active');
+}
+
+function hideSoldAnimation() {
+    document.getElementById('soldOverlay').classList.remove('active');
+}
+
+function populateTeamSelect() {
+    const select = document.getElementById('buyingTeam');
+    select.innerHTML = '<option value="">-- Select Team --</option>';
+
+    teams.forEach(team => {
+        const canBuy = team.players.length < 7 && team.budget > 0;
+        const option = document.createElement('option');
+        option.value = team.id;
+        option.textContent = `${team.name} (Budget: ₹${team.budget}, Players: ${team.players.length}/7)`;
+        option.disabled = !canBuy;
+        select.appendChild(option);
     });
 }
 
 // ========================================
-// Filter and Sort Players
+// Render Functions
 // ========================================
-function filterAndRenderPlayers() {
-    // Filter by role
-    filteredPlayers = players.filter(player => {
-        const matchesFilter = currentFilter === 'all' || player.role === currentFilter;
-        const matchesSearch = player.name.toLowerCase().includes(searchQuery) ||
-                            player.country.toLowerCase().includes(searchQuery) ||
-                            player.role.toLowerCase().includes(searchQuery);
-        return matchesFilter && matchesSearch;
-    });
+function renderAuctionPlayers() {
+    const grid = document.getElementById('auctionPlayersGrid');
+    const availablePlayers = players.filter(p => p.status === 'available');
 
-    // Sort
-    filteredPlayers.sort((a, b) => {
-        switch (currentSort) {
-            case 'name':
-                return a.name.localeCompare(b.name);
-            case 'price-high':
-                return b.basePrice - a.basePrice;
-            case 'price-low':
-                return a.basePrice - b.basePrice;
-            case 'runs':
-                return b.runs - a.runs;
-            case 'wickets':
-                return b.wickets - a.wickets;
-            case 'age':
-                return a.age - b.age;
-            default:
-                return 0;
+    grid.innerHTML = availablePlayers.map(player => `
+        <div class="player-mini-card ${player.status !== 'available' ? 'sold' : ''}"
+             data-id="${player.id}"
+             onclick="selectPlayerForAuction(players.find(p => p.id === ${player.id}))">
+            <div class="mini-avatar" style="background: ${getAvatarColor(player.role)}">
+                ${getInitials(player.name)}
+            </div>
+            <div class="mini-name">${player.name}</div>
+            <div class="mini-role">${player.role}</div>
+            <div class="mini-price">₹${player.basePrice}</div>
+        </div>
+    `).join('');
+}
+
+function filterAndRenderPlayers() {
+    filteredPlayers = players.filter(player => {
+        let matchesFilter = true;
+
+        if (currentFilter === 'available') {
+            matchesFilter = player.status === 'available';
+        } else if (currentFilter === 'sold') {
+            matchesFilter = player.status === 'sold';
+        } else if (currentFilter !== 'all') {
+            matchesFilter = player.role === currentFilter;
         }
+
+        const matchesSearch = player.name.toLowerCase().includes(searchQuery) ||
+                            player.flatNo.toLowerCase().includes(searchQuery) ||
+                            player.role.toLowerCase().includes(searchQuery);
+
+        return matchesFilter && matchesSearch;
     });
 
     renderPlayers();
 }
 
-// ========================================
-// Render Players Grid
-// ========================================
 function renderPlayers() {
     const grid = document.getElementById('playersGrid');
-    const noResults = document.getElementById('noResults');
 
     if (filteredPlayers.length === 0) {
-        grid.innerHTML = '';
-        noResults.style.display = 'block';
+        grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1; padding: 40px;">No players found</p>';
         return;
     }
 
-    noResults.style.display = 'none';
-    grid.innerHTML = filteredPlayers.map(player => createPlayerCard(player)).join('');
+    grid.innerHTML = filteredPlayers.map(player => {
+        const team = player.soldTo ? teams.find(t => t.id === player.soldTo) : null;
+        const roleClass = player.role.toLowerCase().replace('-', '-');
 
-    // Add click events to cards
-    document.querySelectorAll('.player-card').forEach((card, index) => {
-        card.addEventListener('click', () => openModal(filteredPlayers[index]));
-    });
+        return `
+            <div class="player-card ${player.status === 'sold' ? 'sold' : ''}">
+                <div class="player-card-header">
+                    <div class="player-image" style="background: ${getAvatarColor(player.role)}">
+                        ${getInitials(player.name)}
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name">${player.name}</h3>
+                        <div class="player-flat">
+                            <span>🏠</span>
+                            <span>${player.flatNo}</span>
+                        </div>
+                    </div>
+                    <span class="player-role-badge ${roleClass}">${player.role}</span>
+                </div>
+                <div class="player-card-body">
+                    <div class="player-stats-row">
+                        <div class="player-stat">
+                            <div class="player-stat-value">${player.battingStyle}</div>
+                            <div class="player-stat-label">Batting</div>
+                        </div>
+                        <div class="player-stat">
+                            <div class="player-stat-value">${player.bowlingStyle}</div>
+                            <div class="player-stat-label">Bowling</div>
+                        </div>
+                    </div>
+                    <div class="player-price">
+                        <span class="price-label">Base Price</span>
+                        <span class="price-value">₹${player.basePrice}</span>
+                    </div>
+                    ${player.status === 'sold' ? `
+                        <div class="sold-badge">SOLD - ₹${player.soldPrice}</div>
+                        <div class="sold-to">To: ${team ? team.name : 'Unknown'}</div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
-// ========================================
-// Create Player Card HTML
-// ========================================
-function createPlayerCard(player) {
-    const roleClass = player.role.toLowerCase().replace('-', '-');
+function renderTeams() {
+    const grid = document.getElementById('teamsGrid');
 
-    return `
-        <div class="player-card" data-id="${player.id}">
-            <div class="player-card-header">
-                <img src="${player.image}" alt="${player.name}" class="player-image" loading="lazy">
-                <div class="player-info">
-                    <h3 class="player-name">${player.name}</h3>
-                    <div class="player-country">
-                        <span>${getCountryFlag(player.country)}</span>
-                        <span>${player.country}</span>
+    grid.innerHTML = teams.map(team => {
+        const emptySlots = 7 - team.players.length;
+
+        return `
+            <div class="team-card">
+                <div class="team-header" style="background: linear-gradient(135deg, ${team.color}22, transparent)">
+                    <div class="team-info">
+                        <div class="team-logo" style="background: ${team.color}">
+                            ${team.shortName}
+                        </div>
+                        <div class="team-name">${team.name}</div>
+                    </div>
+                    <div class="team-budget">
+                        <div class="budget-label">Budget</div>
+                        <div class="budget-value">₹${team.budget}</div>
                     </div>
                 </div>
-                <span class="player-role-badge ${roleClass}">${player.role}</span>
+                <div class="team-players">
+                    <div class="team-players-title">
+                        <span>Squad</span>
+                        <span class="player-count">${team.players.length}/7</span>
+                    </div>
+                    <div class="team-player-list">
+                        ${team.players.map(player => `
+                            <div class="team-player-item">
+                                <div class="team-player-info">
+                                    <div class="team-player-avatar" style="background: ${team.color}">
+                                        ${getInitials(player.name)}
+                                    </div>
+                                    <div>
+                                        <div class="team-player-name">
+                                            ${player.name}
+                                            ${player.captain ? '<span class="captain-badge">C</span>' : ''}
+                                        </div>
+                                        <div class="team-player-flat">${player.flatNo}</div>
+                                    </div>
+                                </div>
+                                <span class="team-player-role">${player.role}</span>
+                            </div>
+                        `).join('')}
+                        ${Array(emptySlots).fill(0).map(() => `
+                            <div class="empty-slot">Empty Slot</div>
+                        `).join('')}
+                    </div>
+                </div>
             </div>
-            <div class="player-card-body">
-                <div class="player-stats-row">
-                    <div class="player-stat">
-                        <div class="player-stat-value">${player.matches}</div>
-                        <div class="player-stat-label">Matches</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">${formatNumber(player.runs)}</div>
-                        <div class="player-stat-label">Runs</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">${player.wickets}</div>
-                        <div class="player-stat-label">Wickets</div>
-                    </div>
-                </div>
-                <div class="player-price">
-                    <span class="price-label">Base Price</span>
-                    <span class="price-value">${formatPrice(player.basePrice)}</span>
-                </div>
-            </div>
-        </div>
-    `;
+        `;
+    }).join('');
+}
+
+function updateStats() {
+    const availableCount = players.filter(p => p.status === 'available').length;
+    document.getElementById('totalPlayers').textContent = availableCount;
 }
 
 // ========================================
 // Modal Functions
 // ========================================
-function openModal(player) {
-    const modal = document.getElementById('playerModal');
-    const modalBody = document.getElementById('modalBody');
-
-    modalBody.innerHTML = `
-        <div class="modal-player-header">
-            <img src="${player.image}" alt="${player.name}" class="modal-player-image">
-            <div class="modal-player-info">
-                <h2 class="modal-player-name">${player.name}</h2>
-                <div class="modal-player-meta">
-                    <span>${getCountryFlag(player.country)} ${player.country}</span>
-                    <span>Age: ${player.age}</span>
-                    <span>${player.role}</span>
-                </div>
-            </div>
-        </div>
-        <div class="modal-stats-grid">
-            <div class="modal-stat">
-                <div class="modal-stat-value">${player.matches}</div>
-                <div class="modal-stat-label">Matches</div>
-            </div>
-            <div class="modal-stat">
-                <div class="modal-stat-value">${formatNumber(player.runs)}</div>
-                <div class="modal-stat-label">Runs</div>
-            </div>
-            <div class="modal-stat">
-                <div class="modal-stat-value">${player.wickets}</div>
-                <div class="modal-stat-label">Wickets</div>
-            </div>
-            <div class="modal-stat">
-                <div class="modal-stat-value">${player.battingStyle}</div>
-                <div class="modal-stat-label">Batting</div>
-            </div>
-        </div>
-        <div class="modal-stat" style="margin-bottom: 24px;">
-            <div class="modal-stat-value" style="font-size: 1rem;">${player.bowlingStyle}</div>
-            <div class="modal-stat-label">Bowling Style</div>
-        </div>
-        <div class="modal-price">
-            <div class="modal-price-label">Base Price</div>
-            <div class="modal-price-value">${formatPrice(player.basePrice)}</div>
-        </div>
-    `;
-
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
 function closeModal() {
     const modal = document.getElementById('playerModal');
     modal.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// ========================================
-// Update Statistics
-// ========================================
-function updateStats() {
-    // Role counts
-    const batsmenCount = players.filter(p => p.role === 'Batsman').length;
-    const bowlersCount = players.filter(p => p.role === 'Bowler').length;
-    const allroundersCount = players.filter(p => p.role === 'All-rounder').length;
-    const keepersCount = players.filter(p => p.role === 'Wicketkeeper').length;
-
-    document.getElementById('batsmenCount').textContent = batsmenCount;
-    document.getElementById('bowlersCount').textContent = bowlersCount;
-    document.getElementById('allroundersCount').textContent = allroundersCount;
-    document.getElementById('keepersCount').textContent = keepersCount;
-
-    // Top Run Scorers
-    const topRunScorers = [...players].sort((a, b) => b.runs - a.runs).slice(0, 5);
-    document.getElementById('topRunScorers').innerHTML = topRunScorers.map((p, i) => createTopItem(p, i, formatNumber(p.runs))).join('');
-
-    // Top Wicket Takers
-    const topWicketTakers = [...players].sort((a, b) => b.wickets - a.wickets).slice(0, 5);
-    document.getElementById('topWicketTakers').innerHTML = topWicketTakers.map((p, i) => createTopItem(p, i, p.wickets + ' wkts')).join('');
-
-    // Most Valuable
-    const mostValuable = [...players].sort((a, b) => b.basePrice - a.basePrice).slice(0, 5);
-    document.getElementById('mostValuable').innerHTML = mostValuable.map((p, i) => createTopItem(p, i, formatPrice(p.basePrice))).join('');
-
-    // Country Distribution
-    const countryCount = {};
-    players.forEach(p => {
-        countryCount[p.country] = (countryCount[p.country] || 0) + 1;
-    });
-
-    const sortedCountries = Object.entries(countryCount).sort((a, b) => b[1] - a[1]);
-    document.getElementById('countryGrid').innerHTML = sortedCountries.map(([country, count]) => `
-        <div class="country-item">
-            <span class="country-name">${getCountryFlag(country)} ${country}</span>
-            <span class="country-count">${count}</span>
-        </div>
-    `).join('');
-
-    // Update hero stats
-    document.getElementById('totalCountries').textContent = Object.keys(countryCount).length;
-    const totalPool = players.reduce((sum, p) => sum + p.basePrice, 0);
-    document.getElementById('totalPool').textContent = '₹' + Math.round(totalPool / 10000000) + 'Cr';
-}
-
-function createTopItem(player, index, value) {
-    const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
-    return `
-        <div class="top-item">
-            <span class="top-rank ${rankClass}">${index + 1}</span>
-            <img src="${player.image}" alt="${player.name}" class="top-avatar">
-            <div class="top-details">
-                <div class="top-name">${player.name}</div>
-                <div class="top-country">${player.country}</div>
-            </div>
-            <span class="top-value">${value}</span>
-        </div>
-    `;
-}
-
-// ========================================
-// Countdown Timer
-// ========================================
-function startCountdown() {
-    // Set auction date to next month
-    const auctionDate = new Date();
-    auctionDate.setMonth(auctionDate.getMonth() + 1);
-    auctionDate.setDate(15);
-    auctionDate.setHours(10, 0, 0, 0);
-
-    function updateTimer() {
-        const now = new Date();
-        const diff = auctionDate - now;
-
-        if (diff <= 0) {
-            document.getElementById('days').textContent = '00';
-            document.getElementById('hours').textContent = '00';
-            document.getElementById('minutes').textContent = '00';
-            document.getElementById('seconds').textContent = '00';
-            return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById('days').textContent = String(days).padStart(2, '0');
-        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-    }
-
-    updateTimer();
-    setInterval(updateTimer, 1000);
 }
 
 // ========================================
 // Utility Functions
 // ========================================
-function formatPrice(price) {
-    if (price >= 10000000) {
-        return '₹' + (price / 10000000).toFixed(1) + ' Cr';
-    } else if (price >= 100000) {
-        return '₹' + (price / 100000).toFixed(1) + ' L';
-    }
-    return '₹' + price.toLocaleString();
+function getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 }
 
-function formatNumber(num) {
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
-    }
-    return num.toString();
-}
-
-function getCountryFlag(country) {
-    const flags = {
-        'India': '🇮🇳',
-        'Australia': '🇦🇺',
-        'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-        'New Zealand': '🇳🇿',
-        'South Africa': '🇿🇦',
-        'Pakistan': '🇵🇰',
-        'Bangladesh': '🇧🇩',
-        'Sri Lanka': '🇱🇰',
-        'West Indies': '🏝️',
-        'Afghanistan': '🇦🇫'
+function getAvatarColor(role) {
+    const colors = {
+        'Batsman': 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+        'Bowler': 'linear-gradient(135deg, #ef4444, #dc2626)',
+        'All-rounder': 'linear-gradient(135deg, #10b981, #059669)',
+        'Wicketkeeper': 'linear-gradient(135deg, #f59e0b, #d97706)'
     };
-    return flags[country] || '🏳️';
+    return colors[role] || 'linear-gradient(135deg, #6366f1, #4f46e5)';
 }
+
+// Make selectPlayerForAuction available globally
+window.selectPlayerForAuction = selectPlayerForAuction;
