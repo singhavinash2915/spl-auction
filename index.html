@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPL Auction 2025 | Cricket Player Auction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🏏</span>
+                    <span class="logo-text">SPL Auction <span class="year">2025</span></span>
+                </div>
+                <nav class="nav">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#players" class="nav-link">Players</a>
+                    <a href="#stats" class="nav-link">Stats</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">Season 2025</span>
+                <h1 class="hero-title">
+                    SPL Player<br>
+                    <span class="gradient-text">Auction</span>
+                </h1>
+                <p class="hero-description">
+                    The premier cricket league auction featuring 50 world-class players.
+                    Build your dream team and compete for glory!
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalPlayers">50</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalCountries">10</span>
+                        <span class="stat-label">Countries</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalPool">₹63Cr</span>
+                        <span class="stat-label">Pool Value</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#players" class="btn btn-primary">View Players</a>
+                    <a href="#stats" class="btn btn-secondary">View Stats</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-wrapper">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search players..." class="search-input">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="Batsman">Batsmen</button>
+                    <button class="filter-btn" data-filter="Bowler">Bowlers</button>
+                    <button class="filter-btn" data-filter="All-rounder">All-rounders</button>
+                    <button class="filter-btn" data-filter="Wicketkeeper">Wicketkeepers</button>
+                </div>
+                <div class="sort-dropdown">
+                    <select id="sortSelect" class="sort-select">
+                        <option value="name">Sort by Name</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="runs">Most Runs</option>
+                        <option value="wickets">Most Wickets</option>
+                        <option value="age">Age</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Players Section -->
+    <section id="players" class="players-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Players</h2>
+                <p class="section-subtitle">Discover world-class talent for your team</p>
+            </div>
+            <div class="players-grid" id="playersGrid">
+                <!-- Players will be loaded dynamically -->
+            </div>
+            <div class="no-results" id="noResults" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 15h8M9 9h.01M15 9h.01"></path>
+                </svg>
+                <p>No players found matching your criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Auction Statistics</h2>
+                <p class="section-subtitle">Key insights from the player pool</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stats-card-icon batsman">🏏</div>
+                    <div class="stats-card-content">
+                        <h3 id="batsmenCount">0</h3>
+                        <p>Batsmen</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-icon bowler">⚾</div>
+                    <div class="stats-card-content">
+                        <h3 id="bowlersCount">0</h3>
+                        <p>Bowlers</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-icon allrounder">⭐</div>
+                    <div class="stats-card-content">
+                        <h3 id="allroundersCount">0</h3>
+                        <p>All-rounders</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-icon keeper">🧤</div>
+                    <div class="stats-card-content">
+                        <h3 id="keepersCount">0</h3>
+                        <p>Wicketkeepers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Players -->
+            <div class="top-players">
+                <div class="top-section">
+                    <h3>🏆 Top Run Scorers</h3>
+                    <div class="top-list" id="topRunScorers"></div>
+                </div>
+                <div class="top-section">
+                    <h3>🎯 Top Wicket Takers</h3>
+                    <div class="top-list" id="topWicketTakers"></div>
+                </div>
+                <div class="top-section">
+                    <h3>💰 Most Valuable</h3>
+                    <div class="top-list" id="mostValuable"></div>
+                </div>
+            </div>
+
+            <!-- Country Distribution -->
+            <div class="country-stats">
+                <h3>🌍 Players by Country</h3>
+                <div class="country-grid" id="countryGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About SPL Auction</h2>
+                    <p>The Sports Premier League (SPL) is an elite cricket tournament bringing together the world's finest cricketers. Our auction system ensures fair competition and exciting team compositions.</p>
+                    <ul class="about-features">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            50 elite international players
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Players from 10+ countries
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Transparent bidding process
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Real-time auction updates
+                        </li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <div class="about-card">
+                        <div class="about-card-header">
+                            <span class="live-badge">LIVE</span>
+                            <span>Auction 2025</span>
+                        </div>
+                        <div class="about-card-body">
+                            <div class="auction-timer">
+                                <div class="timer-item">
+                                    <span class="timer-value" id="days">00</span>
+                                    <span class="timer-label">Days</span>
+                                </div>
+                                <div class="timer-item">
+                                    <span class="timer-value" id="hours">00</span>
+                                    <span class="timer-label">Hours</span>
+                                </div>
+                                <div class="timer-item">
+                                    <span class="timer-value" id="minutes">00</span>
+                                    <span class="timer-label">Mins</span>
+                                </div>
+                                <div class="timer-item">
+                                    <span class="timer-value" id="seconds">00</span>
+                                    <span class="timer-label">Secs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">🏏</span>
+                    <span class="logo-text">SPL Auction</span>
+                </div>
+                <p class="footer-text">© 2025 SPL Auction. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#players">Players</a>
+                    <a href="#stats">Stats</a>
+                    <a href="#about">About</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Player Modal -->
+    <div class="modal" id="playerModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
