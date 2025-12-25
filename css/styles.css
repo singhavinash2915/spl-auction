@@ -1261,3 +1261,368 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
 }
+
+/* ========================================
+   Additional Buttons
+======================================== */
+.btn-accent {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+.btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+/* ========================================
+   Teams Quick View (in Auction Section)
+======================================== */
+.teams-quick-view {
+    margin: 40px 0;
+    padding: 24px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.teams-quick-view h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+}
+
+.teams-budget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.team-budget-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--background);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.team-budget-card:hover {
+    border-color: var(--primary);
+}
+
+.team-budget-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-budget-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white;
+}
+
+.team-budget-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.team-budget-slots {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.team-budget-amount {
+    text-align: right;
+}
+
+.team-budget-value {
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.team-budget-value.low {
+    color: var(--danger);
+}
+
+.available-count {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+
+/* ========================================
+   Admin Modal
+======================================== */
+.modal-small {
+    max-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.admin-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.admin-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* ========================================
+   Random Overlay Animation
+======================================== */
+.random-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.random-overlay.active {
+    display: flex;
+}
+
+.random-content {
+    text-align: center;
+}
+
+.random-spinner {
+    font-size: 6rem;
+    animation: spin 0.5s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.random-text {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+}
+
+/* ========================================
+   Team Edit Modal
+======================================== */
+.team-edit-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.team-edit-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.team-edit-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+
+.team-edit-budget {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.team-edit-players {
+    margin-top: 20px;
+}
+
+.team-edit-players h4 {
+    margin-bottom: 12px;
+    color: var(--text-muted);
+}
+
+.team-edit-player-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+}
+
+.team-edit-player-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-edit-player-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white;
+}
+
+.team-edit-player-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-edit-player-name {
+    font-weight: 600;
+}
+
+.team-edit-player-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.remove-player-btn {
+    padding: 6px 12px;
+    background: var(--danger);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.remove-player-btn:hover {
+    background: #dc2626;
+}
+
+.remove-player-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.add-player-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.add-player-section h4 {
+    margin-bottom: 12px;
+    color: var(--text-muted);
+}
+
+.add-player-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.add-player-price {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.add-player-price label {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.add-player-price input {
+    flex: 1;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.btn-add-player {
+    width: 100%;
+    padding: 12px;
+    background: var(--gradient-sold);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-add-player:hover {
+    transform: translateY(-2px);
+}
+
+.btn-add-player:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Team Card Edit Button */
+.team-edit-btn {
+    padding: 6px 12px;
+    background: var(--primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-left: auto;
+}
+
+.team-edit-btn:hover {
+    background: var(--primary-dark);
+}

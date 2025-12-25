@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPL Auction 2025 | Sangria Premier League</title>
+    <title>SPL 5.0 Auction | Megapolis Sangria Society</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,13 +16,13 @@
             <div class="header-content">
                 <div class="logo">
                     <span class="logo-icon">🏏</span>
-                    <span class="logo-text">SPL <span class="year">2025</span></span>
+                    <span class="logo-text">SPL <span class="year">5.0</span></span>
                 </div>
                 <nav class="nav">
-                    <a href="#home" class="nav-link active">Home</a>
-                    <a href="#auction" class="nav-link">Auction</a>
-                    <a href="#players" class="nav-link">Players</a>
-                    <a href="#teams" class="nav-link">Teams</a>
+                    <a href="#home" class="nav-link active" data-section="home">Home</a>
+                    <a href="#auction" class="nav-link" data-section="auction">Auction</a>
+                    <a href="#teams" class="nav-link" data-section="teams">Teams</a>
+                    <a href="#players" class="nav-link" data-section="players">Players</a>
                 </nav>
                 <button class="mobile-menu-btn" aria-label="Toggle menu">
                     <span></span>
@@ -38,10 +38,10 @@
         <div class="hero-bg"></div>
         <div class="container">
             <div class="hero-content">
-                <span class="hero-badge">Megapolic Sangria Society</span>
+                <span class="hero-badge">Megapolis Sangria Society</span>
                 <h1 class="hero-title">
                     Sangria Premier<br>
-                    <span class="gradient-text">League 2025</span>
+                    <span class="gradient-text">League 5.0</span>
                 </h1>
                 <p class="hero-description">
                     The ultimate society cricket tournament! 12 teams battle it out for glory.
@@ -74,7 +74,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Live Auction</h2>
-                <p class="section-subtitle">Select a player to start bidding</p>
+                <p class="section-subtitle">Select a player or pick randomly to start bidding</p>
             </div>
 
             <!-- Auction Controls -->
@@ -82,8 +82,8 @@
                 <button class="btn btn-primary" id="startAuctionBtn">
                     <span class="btn-icon">▶</span> Start Auction
                 </button>
-                <button class="btn btn-secondary" id="resetAuctionBtn">
-                    <span class="btn-icon">↺</span> Reset All
+                <button class="btn btn-accent" id="randomPickBtn">
+                    <span class="btn-icon">🎲</span> Random Pick
                 </button>
             </div>
 
@@ -127,10 +127,8 @@
                         </div>
 
                         <div class="bid-controls">
-                            <button class="bid-btn" id="bid50">+₹50</button>
-                            <button class="bid-btn" id="bid100">+₹100</button>
-                            <button class="bid-btn" id="bid200">+₹200</button>
                             <button class="bid-btn" id="bid500">+₹500</button>
+                            <button class="bid-btn" id="bid1000">+₹1000</button>
                         </div>
 
                         <div class="team-select-section">
@@ -152,12 +150,33 @@
                 </div>
             </div>
 
+            <!-- Teams Quick View (in Auction Section) -->
+            <div class="teams-quick-view">
+                <h3>Team Budgets & Slots</h3>
+                <div class="teams-budget-grid" id="teamsBudgetGrid">
+                    <!-- Teams budget cards will be loaded here -->
+                </div>
+            </div>
+
             <!-- Available Players for Auction -->
             <div class="auction-players">
-                <h3>Available Players</h3>
+                <h3>Available Players <span class="available-count" id="availableCount">(48)</span></h3>
                 <div class="players-mini-grid" id="auctionPlayersGrid">
                     <!-- Players will be loaded here -->
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teams Section -->
+    <section id="teams" class="teams-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Teams</h2>
+                <p class="section-subtitle">12 teams competing for the championship</p>
+            </div>
+            <div class="teams-grid" id="teamsGrid">
+                <!-- Teams will be loaded dynamically -->
             </div>
         </div>
     </section>
@@ -196,28 +215,16 @@
         </div>
     </section>
 
-    <!-- Teams Section -->
-    <section id="teams" class="teams-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Teams</h2>
-                <p class="section-subtitle">12 teams competing for the championship</p>
-            </div>
-            <div class="teams-grid" id="teamsGrid">
-                <!-- Teams will be loaded dynamically -->
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
                     <span class="logo-icon">🏏</span>
-                    <span class="logo-text">SPL 2025</span>
+                    <span class="logo-text">SPL 5.0</span>
                 </div>
-                <p class="footer-text">Sangria Premier League | Megapolic Sangria Society</p>
+                <p class="footer-text">Sangria Premier League | Megapolis Sangria Society</p>
+                <button class="btn btn-small btn-danger" id="adminResetBtn">Admin Reset</button>
             </div>
         </div>
     </footer>
@@ -238,6 +245,43 @@
         </div>
     </div>
 
+    <!-- Admin Password Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-small">
+            <button class="modal-close" aria-label="Close modal" onclick="closeAdminModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 20px; text-align: center;">Admin Authentication</h3>
+                <div class="form-group">
+                    <label>Enter Admin Password:</label>
+                    <input type="password" id="adminPassword" class="admin-input" placeholder="Enter password">
+                </div>
+                <button class="btn btn-danger" style="width: 100%; margin-top: 16px;" onclick="verifyAdminPassword()">Reset Auction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Edit Modal -->
+    <div class="modal" id="teamEditModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal" onclick="closeTeamEditModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body" id="teamEditModalBody">
+                <!-- Team edit content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
     <!-- Sold Animation Overlay -->
     <div class="sold-overlay" id="soldOverlay">
         <div class="sold-content">
@@ -245,6 +289,14 @@
             <div class="sold-player" id="soldPlayerName"></div>
             <div class="sold-team" id="soldTeamName"></div>
             <div class="sold-price" id="soldPrice"></div>
+        </div>
+    </div>
+
+    <!-- Random Pick Animation -->
+    <div class="random-overlay" id="randomOverlay">
+        <div class="random-content">
+            <div class="random-spinner" id="randomSpinner">🎲</div>
+            <div class="random-text">Picking Random Player...</div>
         </div>
     </div>
 
