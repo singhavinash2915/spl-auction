@@ -1096,9 +1096,9 @@ function getAvatarColor(role) {
 window.selectPlayerForAuction = selectPlayerForAuction;
 
 // ========================================
-// CSV Export Functions
+// CSV Export Functions (Immediately Available)
 // ========================================
-function downloadCSV(filename, csvContent) {
+window.downloadCSV = function(filename, csvContent) {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -1108,9 +1108,9 @@ function downloadCSV(filename, csvContent) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
+};
 
-function exportAllPlayers() {
+window.exportAllPlayers = function() {
     const headers = ['ID', 'Name', 'Flat No', 'Role', 'Batting Style', 'Bowling Style', 'Base Price', 'Status', 'Sold To', 'Sold Price'];
     const rows = players.map(p => {
         const team = p.soldTo ? teams.find(t => t.id === p.soldTo) : null;
@@ -1129,10 +1129,10 @@ function exportAllPlayers() {
     });
 
     const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    downloadCSV('spl_all_players.csv', csvContent);
-}
+    window.downloadCSV('spl_all_players.csv', csvContent);
+};
 
-function exportSoldPlayers() {
+window.exportSoldPlayers = function() {
     const soldPlayers = players.filter(p => p.status === 'sold');
     const headers = ['Name', 'Flat No', 'Role', 'Base Price', 'Sold Price', 'Team', 'Profit/Loss'];
     const rows = soldPlayers.map(p => {
@@ -1156,10 +1156,10 @@ function exportSoldPlayers() {
     rows.push(['TOTAL', '', `${soldPlayers.length} players`, totalBase, totalSold, '', totalSold - totalBase]);
 
     const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    downloadCSV('spl_sold_players.csv', csvContent);
-}
+    window.downloadCSV('spl_sold_players.csv', csvContent);
+};
 
-function exportTeams() {
+window.exportTeams = function() {
     const headers = ['Team', 'Budget Remaining', 'Players Count', 'Player Name', 'Flat No', 'Role', 'Captain', 'Sold Price'];
     const rows = [];
 
@@ -1181,10 +1181,10 @@ function exportTeams() {
     });
 
     const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    downloadCSV('spl_teams.csv', csvContent);
-}
+    window.downloadCSV('spl_teams.csv', csvContent);
+};
 
-function exportAuctionSummary() {
+window.exportAuctionSummary = function() {
     const soldPlayers = players.filter(p => p.status === 'sold');
     const unsoldPlayers = players.filter(p => p.status === 'unsold');
     const availablePlayers = players.filter(p => p.status === 'available');
@@ -1234,14 +1234,14 @@ function exportAuctionSummary() {
         });
     }
 
-    downloadCSV('spl_auction_summary.csv', csvContent);
-}
+    window.downloadCSV('spl_auction_summary.csv', csvContent);
+};
 
 // Toggle export menu
-function toggleExportMenu() {
+window.toggleExportMenu = function() {
     const menu = document.getElementById('exportMenu');
     menu.classList.toggle('active');
-}
+};
 
 // Close export menu when clicking outside
 document.addEventListener('click', (e) => {
@@ -1251,10 +1251,3 @@ document.addEventListener('click', (e) => {
         menu.classList.remove('active');
     }
 });
-
-// Make export functions globally available
-window.exportAllPlayers = exportAllPlayers;
-window.exportSoldPlayers = exportSoldPlayers;
-window.exportTeams = exportTeams;
-window.exportAuctionSummary = exportAuctionSummary;
-window.toggleExportMenu = toggleExportMenu;
