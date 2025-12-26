@@ -1647,3 +1647,119 @@ body {
 .team-edit-btn:hover {
     background: var(--primary-dark);
 }
+
+/* ========================================
+   Header Actions & Admin Login
+======================================== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    margin-right: 16px;
+}
+
+/* Admin Mode Indicator */
+body.admin-mode .header-actions .btn-secondary {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+/* ========================================
+   Custom Bid Section
+======================================== */
+.custom-bid-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.custom-bid-input {
+    width: 150px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.custom-bid-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.custom-bid-btn {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.reset-btn {
+    background: var(--warning);
+    border-color: var(--warning);
+    color: white;
+}
+
+.reset-btn:hover {
+    background: #d97706;
+    border-color: #d97706;
+}
+
+/* ========================================
+   Footer Credit
+======================================== */
+.footer-center {
+    text-align: center;
+}
+
+.footer-credit {
+    font-size: 0.875rem;
+    color: var(--primary-light);
+    margin-top: 4px;
+}
+
+/* ========================================
+   Admin Mode Styles
+======================================== */
+body:not(.admin-mode) .bid-controls,
+body:not(.admin-mode) .custom-bid-section,
+body:not(.admin-mode) .auction-actions,
+body:not(.admin-mode) .team-select-section {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+body:not(.admin-mode) .bid-controls::after {
+    content: 'Admin mode required';
+    display: block;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: 8px;
+}
+
+/* ========================================
+   Responsive Header Actions
+======================================== */
+@media (max-width: 768px) {
+    .header-actions {
+        margin-right: 8px;
+    }
+
+    .header-actions .btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+
+    .custom-bid-section {
+        flex-direction: column;
+    }
+
+    .custom-bid-input {
+        width: 100%;
+    }
+}

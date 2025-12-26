@@ -1,5 +1,6 @@
 // ========================================
 // SPL 5.0 Auction - Megapolis Sangria Society
+// Created by Avinash Singh
 // ========================================
 
 // Admin Password (in production, this should be server-side)
@@ -14,19 +15,25 @@ let searchQuery = '';
 let currentPlayer = null;
 let currentBid = 0;
 let editingTeam = null;
+let isAdminMode = false;
+let pickedPlayersInSession = []; // Track players already picked in random session
 
 // Local Storage Keys
 const STORAGE_KEYS = {
     PLAYERS: 'spl_players',
-    TEAMS: 'spl_teams'
+    TEAMS: 'spl_teams',
+    ADMIN_MODE: 'spl_admin_mode'
 };
 
 // ========================================
 // Initialize Application
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if admin mode was previously enabled
+    isAdminMode = localStorage.getItem(STORAGE_KEYS.ADMIN_MODE) === 'true';
     loadData();
     initEventListeners();
+    updateAdminUI();
 });
 
 // ========================================
@@ -66,6 +73,7 @@ function initializeApp() {
     renderTeamsBudgetGrid();
     populateTeamSelect();
     updateStats();
+    updateAdminUI();
 }
 
 function saveToLocalStorage() {
@@ -74,15 +82,74 @@ function saveToLocalStorage() {
 }
 
 // ========================================
+// Admin Mode Functions
+// ========================================
+function updateAdminUI() {
+    const adminControls = document.querySelectorAll('.admin-only');
+    const adminStatus = document.getElementById('adminStatus');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+
+    if (isAdminMode) {
+        adminControls.forEach(el => el.style.display = '');
+        if (adminStatus) adminStatus.textContent = 'Admin Mode Active';
+        if (adminLoginBtn) adminLoginBtn.textContent = 'Logout Admin';
+        document.body.classList.add('admin-mode');
+    } else {
+        adminControls.forEach(el => el.style.display = 'none');
+        if (adminStatus) adminStatus.textContent = 'View Only Mode';
+        if (adminLoginBtn) adminLoginBtn.textContent = 'Admin Login';
+        document.body.classList.remove('admin-mode');
+    }
+}
+
+function showAdminLoginModal() {
+    if (isAdminMode) {
+        // Logout
+        isAdminMode = false;
+        localStorage.setItem(STORAGE_KEYS.ADMIN_MODE, 'false');
+        updateAdminUI();
+        alert('Logged out of Admin Mode');
+    } else {
+        document.getElementById('adminLoginModal').classList.add('active');
+        document.getElementById('adminLoginPassword').value = '';
+        document.getElementById('adminLoginPassword').focus();
+    }
+}
+
+function closeAdminLoginModal() {
+    document.getElementById('adminLoginModal').classList.remove('active');
+}
+
+function verifyAdminLogin() {
+    const password = document.getElementById('adminLoginPassword').value;
+    if (password === ADMIN_PASSWORD) {
+        isAdminMode = true;
+        localStorage.setItem(STORAGE_KEYS.ADMIN_MODE, 'true');
+        closeAdminLoginModal();
+        updateAdminUI();
+        alert('Admin Mode Activated! You can now control the auction.');
+    } else {
+        alert('Incorrect password! Access denied.');
+    }
+}
+
+// Make functions globally available
+window.showAdminLoginModal = showAdminLoginModal;
+window.closeAdminLoginModal = closeAdminLoginModal;
+window.verifyAdminLogin = verifyAdminLogin;
+
+// ========================================
 // Event Listeners
 // ========================================
 function initEventListeners() {
     // Search Input
     const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value.toLowerCase();
-        filterAndRenderPlayers();
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            filterAndRenderPlayers();
+        });
+    }
 
     // Filter Buttons
     const filterBtns = document.querySelectorAll('.filter-btn');
@@ -96,31 +163,41 @@ function initEventListeners() {
     });
 
     // Auction Controls
-    document.getElementById('startAuctionBtn').addEventListener('click', startAuction);
-    document.getElementById('randomPickBtn').addEventListener('click', randomPickPlayer);
-    document.getElementById('adminResetBtn').addEventListener('click', showAdminModal);
+    const startBtn = document.getElementById('startAuctionBtn');
+    const randomBtn = document.getElementById('randomPickBtn');
+    const adminResetBtn = document.getElementById('adminResetBtn');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
 
-    // Bid Buttons - Only 500 and 1000
-    document.getElementById('bid500').addEventListener('click', () => addBid(500));
-    document.getElementById('bid1000').addEventListener('click', () => addBid(1000));
+    if (startBtn) startBtn.addEventListener('click', startAuction);
+    if (randomBtn) randomBtn.addEventListener('click', randomPickPlayer);
+    if (adminResetBtn) adminResetBtn.addEventListener('click', showAdminModal);
+    if (adminLoginBtn) adminLoginBtn.addEventListener('click', showAdminLoginModal);
+
+    // Bid Buttons - 500 and 1000
+    const bid500 = document.getElementById('bid500');
+    const bid1000 = document.getElementById('bid1000');
+    const resetBid = document.getElementById('resetBidBtn');
+    const customBidBtn = document.getElementById('customBidBtn');
+
+    if (bid500) bid500.addEventListener('click', () => addBid(500));
+    if (bid1000) bid1000.addEventListener('click', () => addBid(1000));
+    if (resetBid) resetBid.addEventListener('click', resetToBasePrice);
+    if (customBidBtn) customBidBtn.addEventListener('click', applyCustomBid);
 
     // Sold/Unsold Buttons
-    document.getElementById('soldBtn').addEventListener('click', markAsSold);
-    document.getElementById('unsoldBtn').addEventListener('click', markAsUnsold);
+    const soldBtn = document.getElementById('soldBtn');
+    const unsoldBtn = document.getElementById('unsoldBtn');
 
-    // Modal Close
-    const modal = document.getElementById('playerModal');
-    const modalClose = document.querySelector('.modal-close');
-    const modalOverlay = document.querySelector('.modal-overlay');
+    if (soldBtn) soldBtn.addEventListener('click', markAsSold);
+    if (unsoldBtn) unsoldBtn.addEventListener('click', markAsUnsold);
 
-    if (modalClose) modalClose.addEventListener('click', closeModal);
-    if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
-
+    // Escape key to close modals
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal();
             closeAdminModal();
             closeTeamEditModal();
+            closeAdminLoginModal();
         }
     });
 
@@ -140,9 +217,13 @@ function initEventListeners() {
 }
 
 // ========================================
-// Admin Functions
+// Admin Reset Functions
 // ========================================
 function showAdminModal() {
+    if (!isAdminMode) {
+        alert('Please login as Admin first!');
+        return;
+    }
     document.getElementById('adminModal').classList.add('active');
     document.getElementById('adminPassword').value = '';
     document.getElementById('adminPassword').focus();
@@ -170,6 +251,10 @@ window.verifyAdminPassword = verifyAdminPassword;
 // Auction Functions
 // ========================================
 function startAuction() {
+    if (!isAdminMode) {
+        alert('Only Admin can start the auction!');
+        return;
+    }
     document.getElementById('auctionArena').style.display = 'block';
     document.getElementById('startAuctionBtn').innerHTML = '<span class="btn-icon">▶</span> Auction Started';
     document.getElementById('startAuctionBtn').disabled = true;
@@ -182,9 +267,26 @@ function startAuction() {
 }
 
 function randomPickPlayer() {
-    const availablePlayers = players.filter(p => p.status === 'available');
+    if (!isAdminMode) {
+        alert('Only Admin can pick players!');
+        return;
+    }
+
+    // Get available players that haven't been picked in this session
+    const availablePlayers = players.filter(p =>
+        p.status === 'available' && !pickedPlayersInSession.includes(p.id)
+    );
+
     if (availablePlayers.length === 0) {
-        alert('No available players left!');
+        // Reset session if all have been picked
+        pickedPlayersInSession = [];
+        const allAvailable = players.filter(p => p.status === 'available');
+        if (allAvailable.length === 0) {
+            alert('No available players left!');
+            return;
+        }
+        alert('All players have been picked once. Starting new round!');
+        randomPickPlayer();
         return;
     }
 
@@ -209,6 +311,9 @@ function randomPickPlayer() {
             // Final selection
             const finalIndex = Math.floor(Math.random() * availablePlayers.length);
             const selectedPlayer = availablePlayers[finalIndex];
+
+            // Add to picked list so they won't be picked again until all are picked
+            pickedPlayersInSession.push(selectedPlayer.id);
 
             setTimeout(() => {
                 overlay.classList.remove('active');
@@ -238,6 +343,9 @@ function resetAuction() {
             team.budget = 3000;
             team.players = team.players.slice(0, 3);
         });
+
+        // Reset picked players session
+        pickedPlayersInSession = [];
 
         saveToLocalStorage();
 
@@ -274,6 +382,10 @@ function selectPlayerForAuction(player) {
     document.getElementById('basePrice').textContent = `₹${player.basePrice}`;
     document.getElementById('currentBid').textContent = `₹${currentBid}`;
 
+    // Reset custom bid input
+    const customBidInput = document.getElementById('customBidInput');
+    if (customBidInput) customBidInput.value = '';
+
     // Highlight selected player in grid
     document.querySelectorAll('.player-mini-card').forEach(card => {
         card.classList.remove('selected');
@@ -287,12 +399,50 @@ function selectPlayerForAuction(player) {
 }
 
 function addBid(amount) {
+    if (!isAdminMode) {
+        alert('Only Admin can modify bids!');
+        return;
+    }
     if (!currentPlayer) return;
     currentBid += amount;
     document.getElementById('currentBid').textContent = `₹${currentBid}`;
 }
 
+function resetToBasePrice() {
+    if (!isAdminMode) {
+        alert('Only Admin can reset bids!');
+        return;
+    }
+    if (!currentPlayer) return;
+    currentBid = currentPlayer.basePrice;
+    document.getElementById('currentBid').textContent = `₹${currentBid}`;
+}
+
+function applyCustomBid() {
+    if (!isAdminMode) {
+        alert('Only Admin can modify bids!');
+        return;
+    }
+    if (!currentPlayer) return;
+
+    const customBidInput = document.getElementById('customBidInput');
+    const customAmount = parseInt(customBidInput.value);
+
+    if (isNaN(customAmount) || customAmount < 0) {
+        alert('Please enter a valid amount!');
+        return;
+    }
+
+    currentBid = customAmount;
+    document.getElementById('currentBid').textContent = `₹${currentBid}`;
+    customBidInput.value = '';
+}
+
 function markAsSold() {
+    if (!isAdminMode) {
+        alert('Only Admin can mark players as sold!');
+        return;
+    }
     if (!currentPlayer) {
         alert('Please select a player first!');
         return;
@@ -339,7 +489,11 @@ function markAsSold() {
     // Show sold animation
     showSoldAnimation(currentPlayer, team, currentBid);
 
-    // Reset and move to next player
+    // Reset current player
+    currentPlayer = null;
+    currentBid = 0;
+
+    // Reset and update UI
     setTimeout(() => {
         hideSoldAnimation();
         renderPlayers();
@@ -349,18 +503,24 @@ function markAsSold() {
         populateTeamSelect();
         updateStats();
 
-        // Select next available player
-        const nextPlayer = players.find(p => p.status === 'available');
-        if (nextPlayer) {
-            selectPlayerForAuction(nextPlayer);
-        } else {
-            document.getElementById('auctionArena').style.display = 'none';
-            alert('Auction completed! All players have been sold or marked unsold.');
-        }
+        // Clear the auction arena player display
+        document.getElementById('currentPlayerName').textContent = 'Select a Player';
+        document.getElementById('currentPlayerFlat').textContent = '--';
+        document.getElementById('currentPlayerRole').textContent = '--';
+        document.getElementById('currentPlayerAge').textContent = '';
+        document.getElementById('currentPlayerBatting').textContent = '--';
+        document.getElementById('currentPlayerBowling').textContent = '--';
+        document.getElementById('basePrice').textContent = '₹0';
+        document.getElementById('currentBid').textContent = '₹0';
+        document.getElementById('currentPlayerAvatar').innerHTML = '<span>?</span>';
     }, 3000);
 }
 
 function markAsUnsold() {
+    if (!isAdminMode) {
+        alert('Only Admin can mark players as unsold!');
+        return;
+    }
     if (!currentPlayer) {
         alert('Please select a player first!');
         return;
@@ -369,18 +529,23 @@ function markAsUnsold() {
     currentPlayer.status = 'unsold';
     saveToLocalStorage();
 
+    currentPlayer = null;
+    currentBid = 0;
+
     renderPlayers();
     renderAuctionPlayers();
     updateStats();
 
-    // Select next available player
-    const nextPlayer = players.find(p => p.status === 'available');
-    if (nextPlayer) {
-        selectPlayerForAuction(nextPlayer);
-    } else {
-        document.getElementById('auctionArena').style.display = 'none';
-        alert('Auction completed! All players have been processed.');
-    }
+    // Clear the auction arena player display
+    document.getElementById('currentPlayerName').textContent = 'Select a Player';
+    document.getElementById('currentPlayerFlat').textContent = '--';
+    document.getElementById('currentPlayerRole').textContent = '--';
+    document.getElementById('currentPlayerAge').textContent = '';
+    document.getElementById('currentPlayerBatting').textContent = '--';
+    document.getElementById('currentPlayerBowling').textContent = '--';
+    document.getElementById('basePrice').textContent = '₹0';
+    document.getElementById('currentBid').textContent = '₹0';
+    document.getElementById('currentPlayerAvatar').innerHTML = '<span>?</span>';
 }
 
 function showSoldAnimation(player, team, price) {
@@ -412,6 +577,11 @@ function populateTeamSelect() {
 // Team Edit Functions
 // ========================================
 function openTeamEditModal(teamId) {
+    if (!isAdminMode) {
+        alert('Only Admin can edit teams!');
+        return;
+    }
+
     editingTeam = teams.find(t => t.id === teamId);
     if (!editingTeam) return;
 
@@ -440,7 +610,7 @@ function openTeamEditModal(teamId) {
                                 ${player.name}
                                 ${player.captain ? '<span class="captain-badge">C</span>' : ''}
                             </span>
-                            <span class="team-edit-player-meta">${player.flatNo} | ${player.role}${player.soldPrice ? ` | ₹${player.soldPrice}` : ''}</span>
+                            <span class="team-edit-player-meta">${player.flatNo || '-'} | ${player.role}${player.soldPrice ? ` | ₹${player.soldPrice}` : ''}</span>
                         </div>
                     </div>
                     <button class="remove-player-btn" onclick="removePlayerFromTeam(${teamId}, ${index})" ${index < 3 ? 'disabled title="Cannot remove original players"' : ''}>
@@ -456,7 +626,7 @@ function openTeamEditModal(teamId) {
             <select class="add-player-select" id="addPlayerSelect">
                 <option value="">-- Select Available Player --</option>
                 ${availablePlayers.map(p => `
-                    <option value="${p.id}">${p.name} (${p.flatNo}) - ${p.role} - Base: ₹${p.basePrice}</option>
+                    <option value="${p.id}">${p.name} (${p.flatNo || '-'}) - ${p.role} - Base: ₹${p.basePrice}</option>
                 `).join('')}
             </select>
             <div class="add-player-price">
@@ -577,6 +747,7 @@ window.addPlayerToTeam = addPlayerToTeam;
 // ========================================
 function renderTeamsBudgetGrid() {
     const grid = document.getElementById('teamsBudgetGrid');
+    if (!grid) return;
 
     grid.innerHTML = teams.map(team => `
         <div class="team-budget-card" onclick="openTeamEditModal(${team.id})">
@@ -596,9 +767,12 @@ function renderTeamsBudgetGrid() {
 
 function renderAuctionPlayers() {
     const grid = document.getElementById('auctionPlayersGrid');
+    if (!grid) return;
+
     const availablePlayers = players.filter(p => p.status === 'available');
 
-    document.getElementById('availableCount').textContent = `(${availablePlayers.length})`;
+    const countEl = document.getElementById('availableCount');
+    if (countEl) countEl.textContent = `(${availablePlayers.length})`;
 
     grid.innerHTML = availablePlayers.map(player => `
         <div class="player-mini-card ${player.status !== 'available' ? 'sold' : ''}"
@@ -627,7 +801,7 @@ function filterAndRenderPlayers() {
         }
 
         const matchesSearch = player.name.toLowerCase().includes(searchQuery) ||
-                            player.flatNo.toLowerCase().includes(searchQuery) ||
+                            (player.flatNo || '').toLowerCase().includes(searchQuery) ||
                             player.role.toLowerCase().includes(searchQuery);
 
         return matchesFilter && matchesSearch;
@@ -638,6 +812,7 @@ function filterAndRenderPlayers() {
 
 function renderPlayers() {
     const grid = document.getElementById('playersGrid');
+    if (!grid) return;
 
     if (filteredPlayers.length === 0) {
         grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1; padding: 40px;">No players found</p>';
@@ -690,6 +865,7 @@ function renderPlayers() {
 
 function renderTeams() {
     const grid = document.getElementById('teamsGrid');
+    if (!grid) return;
 
     grid.innerHTML = teams.map(team => {
         const emptySlots = 7 - team.players.length;
@@ -703,7 +879,7 @@ function renderTeams() {
                         </div>
                         <div class="team-name">${team.name}</div>
                     </div>
-                    <button class="team-edit-btn" onclick="openTeamEditModal(${team.id})">Edit</button>
+                    <button class="team-edit-btn admin-only" onclick="openTeamEditModal(${team.id})" style="${isAdminMode ? '' : 'display:none'}">Edit</button>
                     <div class="team-budget">
                         <div class="budget-label">Budget</div>
                         <div class="budget-value">₹${team.budget}</div>
@@ -726,7 +902,7 @@ function renderTeams() {
                                             ${player.name}
                                             ${player.captain ? '<span class="captain-badge">C</span>' : ''}
                                         </div>
-                                        <div class="team-player-flat">${player.flatNo}</div>
+                                        <div class="team-player-flat">${player.flatNo || '-'}</div>
                                     </div>
                                 </div>
                                 <span class="team-player-role">${player.role}</span>
@@ -744,7 +920,8 @@ function renderTeams() {
 
 function updateStats() {
     const availableCount = players.filter(p => p.status === 'available').length;
-    document.getElementById('totalPlayers').textContent = availableCount;
+    const totalEl = document.getElementById('totalPlayers');
+    if (totalEl) totalEl.textContent = availableCount;
 }
 
 // ========================================
@@ -752,7 +929,7 @@ function updateStats() {
 // ========================================
 function closeModal() {
     const modal = document.getElementById('playerModal');
-    modal.classList.remove('active');
+    if (modal) modal.classList.remove('active');
 }
 
 // ========================================

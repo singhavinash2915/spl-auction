@@ -24,6 +24,9 @@
                     <a href="#teams" class="nav-link" data-section="teams">Teams</a>
                     <a href="#players" class="nav-link" data-section="players">Players</a>
                 </nav>
+                <div class="header-actions">
+                    <button class="btn btn-small btn-secondary" id="adminLoginBtn">Admin Login</button>
+                </div>
                 <button class="mobile-menu-btn" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -129,6 +132,12 @@
                         <div class="bid-controls">
                             <button class="bid-btn" id="bid500">+₹500</button>
                             <button class="bid-btn" id="bid1000">+₹1000</button>
+                            <button class="bid-btn reset-btn" id="resetBidBtn">Reset Bid</button>
+                        </div>
+
+                        <div class="custom-bid-section">
+                            <input type="number" id="customBidInput" class="custom-bid-input" placeholder="Enter amount" min="0">
+                            <button class="bid-btn custom-bid-btn" id="customBidBtn">Set Bid</button>
                         </div>
 
                         <div class="team-select-section">
@@ -223,7 +232,10 @@
                     <span class="logo-icon">🏏</span>
                     <span class="logo-text">SPL 5.0</span>
                 </div>
-                <p class="footer-text">Sangria Premier League | Megapolis Sangria Society</p>
+                <div class="footer-center">
+                    <p class="footer-text">Sangria Premier League | Megapolis Sangria Society</p>
+                    <p class="footer-credit">Created by Avinash Singh</p>
+                </div>
                 <button class="btn btn-small btn-danger" id="adminResetBtn">Admin Reset</button>
             </div>
         </div>
@@ -297,6 +309,27 @@
         <div class="random-content">
             <div class="random-spinner" id="randomSpinner">🎲</div>
             <div class="random-text">Picking Random Player...</div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-small">
+            <button class="modal-close" aria-label="Close modal" onclick="closeAdminLoginModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 20px; text-align: center;">Admin Login</h3>
+                <div class="form-group">
+                    <label>Enter Admin Password:</label>
+                    <input type="password" id="adminLoginPassword" class="admin-input" placeholder="Enter password">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="verifyAdminLogin()">Login</button>
+            </div>
         </div>
     </div>
 
