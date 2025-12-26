@@ -362,9 +362,9 @@ body {
 }
 
 .player-avatar {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
+    width: 160px;
+    height: 200px;
+    border-radius: var(--radius-lg);
     background: var(--gradient-1);
     display: flex;
     align-items: center;
@@ -375,12 +375,14 @@ body {
     border: 4px solid var(--primary-light);
     box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .player-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: var(--background);
 }
 
 .player-details h2 {
@@ -1354,8 +1356,8 @@ body {
     }
 
     .player-avatar {
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 150px;
         font-size: 2rem;
     }
 
@@ -1846,8 +1848,8 @@ body {
     }
 
     .player-avatar {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 130px;
     }
 }
 
