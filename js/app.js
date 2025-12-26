@@ -1094,3 +1094,167 @@ function getAvatarColor(role) {
 
 // Make selectPlayerForAuction available globally
 window.selectPlayerForAuction = selectPlayerForAuction;
+
+// ========================================
+// CSV Export Functions
+// ========================================
+function downloadCSV(filename, csvContent) {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function exportAllPlayers() {
+    const headers = ['ID', 'Name', 'Flat No', 'Role', 'Batting Style', 'Bowling Style', 'Base Price', 'Status', 'Sold To', 'Sold Price'];
+    const rows = players.map(p => {
+        const team = p.soldTo ? teams.find(t => t.id === p.soldTo) : null;
+        return [
+            p.id,
+            `"${p.name}"`,
+            p.flatNo || '-',
+            p.role,
+            p.battingStyle,
+            p.bowlingStyle,
+            p.basePrice,
+            p.status,
+            team ? `"${team.name}"` : '-',
+            p.soldPrice || '-'
+        ];
+    });
+
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    downloadCSV('spl_all_players.csv', csvContent);
+}
+
+function exportSoldPlayers() {
+    const soldPlayers = players.filter(p => p.status === 'sold');
+    const headers = ['Name', 'Flat No', 'Role', 'Base Price', 'Sold Price', 'Team', 'Profit/Loss'];
+    const rows = soldPlayers.map(p => {
+        const team = teams.find(t => t.id === p.soldTo);
+        const profitLoss = p.soldPrice - p.basePrice;
+        return [
+            `"${p.name}"`,
+            p.flatNo || '-',
+            p.role,
+            p.basePrice,
+            p.soldPrice,
+            team ? `"${team.name}"` : '-',
+            profitLoss >= 0 ? `+${profitLoss}` : profitLoss
+        ];
+    });
+
+    // Add summary row
+    const totalBase = soldPlayers.reduce((sum, p) => sum + p.basePrice, 0);
+    const totalSold = soldPlayers.reduce((sum, p) => sum + p.soldPrice, 0);
+    rows.push(['', '', '', '', '', '', '']);
+    rows.push(['TOTAL', '', `${soldPlayers.length} players`, totalBase, totalSold, '', totalSold - totalBase]);
+
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    downloadCSV('spl_sold_players.csv', csvContent);
+}
+
+function exportTeams() {
+    const headers = ['Team', 'Budget Remaining', 'Players Count', 'Player Name', 'Flat No', 'Role', 'Captain', 'Sold Price'];
+    const rows = [];
+
+    teams.forEach(team => {
+        team.players.forEach((player, index) => {
+            rows.push([
+                index === 0 ? `"${team.name}"` : '',
+                index === 0 ? team.budget : '',
+                index === 0 ? `${team.players.length}/7` : '',
+                `"${player.name}"`,
+                player.flatNo || '-',
+                player.role,
+                player.captain ? 'Yes' : 'No',
+                player.soldPrice || 'Original'
+            ]);
+        });
+        // Add empty row between teams
+        rows.push(['', '', '', '', '', '', '', '']);
+    });
+
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    downloadCSV('spl_teams.csv', csvContent);
+}
+
+function exportAuctionSummary() {
+    const soldPlayers = players.filter(p => p.status === 'sold');
+    const unsoldPlayers = players.filter(p => p.status === 'unsold');
+    const availablePlayers = players.filter(p => p.status === 'available');
+
+    const totalSpent = soldPlayers.reduce((sum, p) => sum + p.soldPrice, 0);
+    const avgPrice = soldPlayers.length > 0 ? Math.round(totalSpent / soldPlayers.length) : 0;
+    const highestBid = soldPlayers.length > 0 ? Math.max(...soldPlayers.map(p => p.soldPrice)) : 0;
+    const lowestBid = soldPlayers.length > 0 ? Math.min(...soldPlayers.map(p => p.soldPrice)) : 0;
+
+    const highestPlayer = soldPlayers.find(p => p.soldPrice === highestBid);
+    const lowestPlayer = soldPlayers.find(p => p.soldPrice === lowestBid);
+
+    let csvContent = 'SPL 5.0 AUCTION SUMMARY REPORT\n';
+    csvContent += `Generated on,${new Date().toLocaleString()}\n\n`;
+
+    csvContent += 'OVERVIEW\n';
+    csvContent += `Total Players,${players.length}\n`;
+    csvContent += `Sold,${soldPlayers.length}\n`;
+    csvContent += `Unsold,${unsoldPlayers.length}\n`;
+    csvContent += `Available,${availablePlayers.length}\n\n`;
+
+    csvContent += 'FINANCIAL SUMMARY\n';
+    csvContent += `Total Amount Spent,₹${totalSpent}\n`;
+    csvContent += `Average Selling Price,₹${avgPrice}\n`;
+    csvContent += `Highest Bid,₹${highestBid}${highestPlayer ? ` (${highestPlayer.name})` : ''}\n`;
+    csvContent += `Lowest Bid,₹${lowestBid}${lowestPlayer ? ` (${lowestPlayer.name})` : ''}\n\n`;
+
+    csvContent += 'TEAM BUDGETS\n';
+    csvContent += 'Team,Budget Remaining,Players,Amount Spent\n';
+    teams.forEach(team => {
+        const spent = 3000 - team.budget;
+        csvContent += `"${team.name}",₹${team.budget},${team.players.length}/7,₹${spent}\n`;
+    });
+
+    csvContent += '\nSOLD PLAYERS\n';
+    csvContent += 'Name,Role,Sold Price,Team\n';
+    soldPlayers.forEach(p => {
+        const team = teams.find(t => t.id === p.soldTo);
+        csvContent += `"${p.name}",${p.role},₹${p.soldPrice},"${team ? team.name : '-'}"\n`;
+    });
+
+    if (unsoldPlayers.length > 0) {
+        csvContent += '\nUNSOLD PLAYERS\n';
+        csvContent += 'Name,Role,Base Price\n';
+        unsoldPlayers.forEach(p => {
+            csvContent += `"${p.name}",${p.role},₹${p.basePrice}\n`;
+        });
+    }
+
+    downloadCSV('spl_auction_summary.csv', csvContent);
+}
+
+// Toggle export menu
+function toggleExportMenu() {
+    const menu = document.getElementById('exportMenu');
+    menu.classList.toggle('active');
+}
+
+// Close export menu when clicking outside
+document.addEventListener('click', (e) => {
+    const dropdown = document.querySelector('.export-dropdown');
+    const menu = document.getElementById('exportMenu');
+    if (dropdown && menu && !dropdown.contains(e.target)) {
+        menu.classList.remove('active');
+    }
+});
+
+// Make export functions globally available
+window.exportAllPlayers = exportAllPlayers;
+window.exportSoldPlayers = exportSoldPlayers;
+window.exportTeams = exportTeams;
+window.exportAuctionSummary = exportAuctionSummary;
+window.toggleExportMenu = toggleExportMenu;
