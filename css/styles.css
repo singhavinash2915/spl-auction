@@ -30,6 +30,26 @@
     --radius-lg: 16px;
     --radius-xl: 24px;
     --transition: all 0.3s ease;
+    --header-bg: rgba(15, 23, 42, 0.9);
+    --card-bg: var(--background-light);
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --background: #f1f5f9;
+    --background-light: #ffffff;
+    --surface: #e2e8f0;
+    --surface-light: #cbd5e1;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --text-dark: #64748b;
+    --border: #cbd5e1;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    --header-bg: rgba(241, 245, 249, 0.95);
+    --card-bg: #ffffff;
 }
 
 *, *::before, *::after {
@@ -65,7 +85,7 @@ body {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(15, 23, 42, 0.9);
+    background: var(--header-bg);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
 }
@@ -2283,6 +2303,42 @@ body {
     gap: 12px;
     margin-left: auto;
     margin-right: 16px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.25rem;
+}
+
+.theme-toggle:hover {
+    background: var(--surface-light);
+    transform: scale(1.05);
+}
+
+.theme-toggle .sun-icon {
+    display: none;
+}
+
+.theme-toggle .moon-icon {
+    display: block;
+}
+
+[data-theme="light"] .theme-toggle .sun-icon {
+    display: block;
+}
+
+[data-theme="light"] .theme-toggle .moon-icon {
+    display: none;
 }
 
 /* Admin Mode Indicator */

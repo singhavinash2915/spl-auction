@@ -22,19 +22,45 @@ let pickedPlayersInSession = []; // Track players already picked in random sessi
 const STORAGE_KEYS = {
     PLAYERS: 'spl_players',
     TEAMS: 'spl_teams',
-    ADMIN_MODE: 'spl_admin_mode'
+    ADMIN_MODE: 'spl_admin_mode',
+    THEME: 'spl_theme'
 };
 
 // ========================================
 // Initialize Application
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize theme
+    initTheme();
     // Check if admin mode was previously enabled
     isAdminMode = localStorage.getItem(STORAGE_KEYS.ADMIN_MODE) === 'true';
     loadData();
     initEventListeners();
     updateAdminUI();
 });
+
+// ========================================
+// Theme Functions
+// ========================================
+function initTheme() {
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+        // Default to dark theme
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem(STORAGE_KEYS.THEME, newTheme);
+}
+
+// Make theme function globally available
+window.toggleTheme = toggleTheme;
 
 // ========================================
 // Load Data
@@ -142,6 +168,12 @@ window.verifyAdminLogin = verifyAdminLogin;
 // Event Listeners
 // ========================================
 function initEventListeners() {
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+
     // Search Input
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
