@@ -122,7 +122,11 @@
     "players": [
       {"name": "Rahul Yadav", "flatNo": "", "role": "All-rounder", "captain": true},
       {"name": "Yogendra Nayak", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Joydeep Day", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Joydeep Day", "flatNo": "", "role": "Bowler", "captain": false},
+      {"name": "Sandeep Nayak", "flatNo": "", "role": "All-rounder", "captain": false},
+      {"name": "Abhishek Maurya", "flatNo": "", "role": "All-rounder", "captain": false},
+      {"name": "Manish R", "flatNo": "", "role": "All-rounder", "captain": false},
+      {"name": "Manish G", "flatNo": "", "role": "All-rounder", "captain": false}
     ]
   },
   {
