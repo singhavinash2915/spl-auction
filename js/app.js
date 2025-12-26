@@ -890,7 +890,7 @@ function renderPlayers() {
         const roleClass = player.role.toLowerCase().replace('-', '-');
 
         return `
-            <div class="player-card ${player.status === 'sold' ? 'sold' : ''}">
+            <div class="player-card ${player.status === 'sold' ? 'sold' : ''}" onclick="openPlayerModal(${player.id})">
                 <div class="player-card-header">
                     <div class="player-image" style="background: ${player.photo ? 'transparent' : getAvatarColor(player.role)}">
                         ${player.photo ? `<img src="${player.photo}" alt="${player.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${getInitials(player.name)}'">` : getInitials(player.name)}
@@ -997,6 +997,83 @@ function closeModal() {
     const modal = document.getElementById('playerModal');
     if (modal) modal.classList.remove('active');
 }
+
+function openPlayerModal(playerId) {
+    const player = players.find(p => p.id === playerId);
+    if (!player) return;
+
+    const team = player.soldTo ? teams.find(t => t.id === player.soldTo) : null;
+    const modalBody = document.getElementById('modalBody');
+
+    modalBody.innerHTML = `
+        <div class="player-modal-layout">
+            <div class="player-modal-info">
+                <div class="player-modal-header">
+                    <span class="player-modal-role ${player.role.toLowerCase().replace('-', '')}">${player.role}</span>
+                    <span class="player-modal-status ${player.status}">${player.status === 'sold' ? 'SOLD' : player.status === 'unsold' ? 'UNSOLD' : 'AVAILABLE'}</span>
+                </div>
+                <h2 class="player-modal-name">${player.name}</h2>
+                ${player.flatNo ? `<p class="player-modal-flat"><span>🏠</span> Flat: ${player.flatNo}</p>` : ''}
+
+                <div class="player-modal-stats">
+                    <div class="player-modal-stat">
+                        <div class="stat-icon">🏏</div>
+                        <div class="stat-details">
+                            <span class="stat-label">Batting</span>
+                            <span class="stat-value">${player.battingStyle}</span>
+                        </div>
+                    </div>
+                    <div class="player-modal-stat">
+                        <div class="stat-icon">⚾</div>
+                        <div class="stat-details">
+                            <span class="stat-label">Bowling</span>
+                            <span class="stat-value">${player.bowlingStyle}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-modal-price-section">
+                    <div class="price-item">
+                        <span class="price-label">Base Price</span>
+                        <span class="price-amount">₹${player.basePrice}</span>
+                    </div>
+                    ${player.status === 'sold' ? `
+                        <div class="price-item sold">
+                            <span class="price-label">Sold For</span>
+                            <span class="price-amount">₹${player.soldPrice}</span>
+                        </div>
+                    ` : ''}
+                </div>
+
+                ${team ? `
+                    <div class="player-modal-team">
+                        <span class="team-label">Bought by</span>
+                        <div class="team-info-badge" style="background: ${team.color}20; border-color: ${team.color}">
+                            <span class="team-short" style="background: ${team.color}">${team.shortName}</span>
+                            <span class="team-name">${team.name}</span>
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+            <div class="player-modal-photo">
+                ${player.photo
+                    ? `<img src="${player.photo}" alt="${player.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>${getInitials(player.name)}</div>'">`
+                    : `<div class="photo-placeholder">${getInitials(player.name)}</div>`
+                }
+            </div>
+        </div>
+    `;
+
+    document.getElementById('playerModal').classList.add('active');
+}
+
+function closePlayerModal() {
+    document.getElementById('playerModal').classList.remove('active');
+}
+
+// Make functions globally available
+window.openPlayerModal = openPlayerModal;
+window.closePlayerModal = closePlayerModal;
 
 // ========================================
 // Utility Functions
