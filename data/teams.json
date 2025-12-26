@@ -4,6 +4,7 @@
     "name": "Swift Strikers",
     "shortName": "SS",
     "color": "#ef4444",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -17,6 +18,7 @@
     "name": "The Flat Batters",
     "shortName": "TFB",
     "color": "#3b82f6",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -30,6 +32,7 @@
     "name": "Pitch Pirates",
     "shortName": "PP",
     "color": "#10b981",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -43,6 +46,7 @@
     "name": "Alpha Striker",
     "shortName": "AS",
     "color": "#8b5cf6",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -56,6 +60,7 @@
     "name": "Super Six",
     "shortName": "S6",
     "color": "#f59e0b",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -69,6 +74,7 @@
     "name": "Explosive Seven",
     "shortName": "E7",
     "color": "#06b6d4",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -82,6 +88,7 @@
     "name": "7 Rangbaaz",
     "shortName": "7R",
     "color": "#ec4899",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -95,6 +102,7 @@
     "name": "Baazigars",
     "shortName": "BZ",
     "color": "#84cc16",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -108,6 +116,7 @@
     "name": "Team DnD",
     "shortName": "DND",
     "color": "#eab308",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [
@@ -121,6 +130,7 @@
     "name": "Three Arrows",
     "shortName": "TA",
     "color": "#64748b",
+    "logo": "",
     "budget": 3000,
     "maxPlayers": 7,
     "players": [

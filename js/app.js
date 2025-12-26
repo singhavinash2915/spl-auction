@@ -620,7 +620,9 @@ function openTeamEditModal(teamId) {
 
     modalBody.innerHTML = `
         <div class="team-edit-header">
-            <div class="team-edit-logo" style="background: ${editingTeam.color}">${editingTeam.shortName}</div>
+            <div class="team-edit-logo ${editingTeam.logo ? 'has-logo' : ''}" style="background: ${editingTeam.logo ? 'transparent' : editingTeam.color}">
+                ${editingTeam.logo ? `<img src="${editingTeam.logo}" alt="${editingTeam.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${editingTeam.shortName}'; this.parentElement.style.background='${editingTeam.color}'">` : editingTeam.shortName}
+            </div>
             <div class="team-edit-info">
                 <h3>${editingTeam.name}</h3>
                 <div class="team-edit-budget">Budget: ₹${editingTeam.budget}</div>
@@ -782,7 +784,9 @@ function renderTeamsBudgetGrid() {
     grid.innerHTML = teams.map(team => `
         <div class="team-budget-card" onclick="openTeamEditModal(${team.id})">
             <div class="team-budget-info">
-                <div class="team-budget-logo" style="background: ${team.color}">${team.shortName}</div>
+                <div class="team-budget-logo ${team.logo ? 'has-logo' : ''}" style="background: ${team.logo ? 'transparent' : team.color}">
+                    ${team.logo ? `<img src="${team.logo}" alt="${team.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${team.shortName}'; this.parentElement.style.background='${team.color}'">` : team.shortName}
+                </div>
                 <div>
                     <div class="team-budget-name">${team.name}</div>
                     <div class="team-budget-slots">${team.players.length}/7 players</div>
@@ -904,8 +908,8 @@ function renderTeams() {
             <div class="team-card">
                 <div class="team-header" style="background: linear-gradient(135deg, ${team.color}22, transparent)">
                     <div class="team-info">
-                        <div class="team-logo" style="background: ${team.color}">
-                            ${team.shortName}
+                        <div class="team-logo ${team.logo ? 'has-logo' : ''}" style="background: ${team.logo ? 'transparent' : team.color}">
+                            ${team.logo ? `<img src="${team.logo}" alt="${team.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${team.shortName}'; this.parentElement.style.background='${team.color}'">` : team.shortName}
                         </div>
                         <div class="team-name">${team.name}</div>
                     </div>
