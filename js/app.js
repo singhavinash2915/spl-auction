@@ -211,9 +211,39 @@ function initEventListeners() {
                     behavior: 'smooth',
                     block: 'start'
                 });
+                // Close mobile menu after clicking
+                const nav = document.querySelector('.nav');
+                const mobileBtn = document.querySelector('.mobile-menu-btn');
+                if (nav) nav.classList.remove('active');
+                if (mobileBtn) mobileBtn.classList.remove('active');
             }
         });
     });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const nav = document.querySelector('.nav');
+    if (mobileMenuBtn && nav) {
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        });
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        const nav = document.querySelector('.nav');
+        const mobileBtn = document.querySelector('.mobile-menu-btn');
+        if (nav && nav.classList.contains('active')) {
+            if (!nav.contains(e.target) && !mobileBtn.contains(e.target)) {
+                nav.classList.remove('active');
+                mobileBtn.classList.remove('active');
+            }
+        }
+    });
+
+    // Handle touch events for better mobile experience
+    document.addEventListener('touchstart', () => {}, { passive: true });
 }
 
 // ========================================

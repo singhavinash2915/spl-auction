@@ -124,6 +124,7 @@ body {
     border: none;
     cursor: pointer;
     padding: 8px;
+    z-index: 1001;
 }
 
 .mobile-menu-btn span {
@@ -132,6 +133,19 @@ body {
     height: 2px;
     background: var(--text);
     transition: var(--transition);
+}
+
+/* Mobile menu button animation when active */
+.mobile-menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
 }
 
 /* ========================================
@@ -1187,79 +1201,653 @@ body {
 }
 
 /* ========================================
-   Responsive
+   Responsive - Mobile First Approach
 ======================================== */
+
+/* Container adjustments for mobile */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    /* Header Mobile */
+    .header-content {
+        height: 60px;
+    }
+
+    .logo {
+        font-size: 1.25rem;
+        gap: 8px;
+    }
+
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+
     .nav {
         display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: var(--background);
+        flex-direction: column;
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        z-index: 999;
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 12px 16px;
+        text-align: center;
     }
 
     .mobile-menu-btn {
         display: flex;
     }
 
+    .header-actions {
+        margin-right: 8px;
+        margin-left: 0;
+    }
+
+    .header-actions .btn {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+
+    /* Hero Mobile */
+    .hero {
+        min-height: auto;
+        padding-top: 80px;
+        padding-bottom: 40px;
+    }
+
+    .hero-content {
+        padding: 30px 0;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        margin-bottom: 16px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+
     .hero-stats {
-        gap: 24px;
+        gap: 16px;
+        margin-bottom: 24px;
+        justify-content: space-between;
     }
 
     .stat-number {
-        font-size: 2rem;
+        font-size: 1.75rem;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
     }
 
     .hero-actions {
         flex-direction: column;
+        gap: 12px;
     }
 
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    /* Section padding */
+    .auction-section,
+    .players-section,
+    .teams-section {
+        padding: 60px 0;
+    }
+
+    .section-header {
+        margin-bottom: 32px;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+    }
+
+    /* Auction Controls */
     .auction-controls {
         flex-direction: column;
+        gap: 12px;
+        padding: 0 16px;
+    }
+
+    .auction-controls .btn {
+        width: 100%;
+    }
+
+    /* Auction Arena */
+    .current-player-card {
+        border-radius: var(--radius-lg);
+        margin: 0 8px;
     }
 
     .player-spotlight {
         flex-direction: column;
         text-align: center;
+        padding: 24px 16px;
+        gap: 16px;
+    }
+
+    .player-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+    }
+
+    .player-details h2 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
     }
 
     .player-meta {
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .meta-item {
+        padding: 4px 10px;
+        font-size: 0.75rem;
     }
 
     .player-skills {
         justify-content: center;
+        gap: 16px;
+    }
+
+    .skill-label {
+        font-size: 0.65rem;
+    }
+
+    .skill-value {
+        font-size: 0.85rem;
+    }
+
+    /* Bidding Section Mobile */
+    .bidding-section {
+        padding: 20px 16px;
     }
 
     .price-display {
-        flex-direction: column;
+        flex-direction: row;
         gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .price-value {
+        font-size: 1.5rem;
+    }
+
+    .price-value.highlight {
+        font-size: 2rem;
     }
 
     .bid-controls {
         flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .bid-btn {
+        padding: 10px 16px;
+        font-size: 0.875rem;
+        flex: 1;
+        min-width: 80px;
+    }
+
+    .custom-bid-section {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .custom-bid-input {
+        width: 100%;
+    }
+
+    .team-select-section {
+        margin-bottom: 16px;
+    }
+
+    .team-select {
+        width: 100%;
+        min-width: auto;
+        padding: 10px 16px;
+    }
+
+    .auction-actions {
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .auction-actions .btn {
+        flex: 1;
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+
+    /* Teams Quick View */
+    .teams-quick-view {
+        margin: 24px 8px;
+        padding: 16px;
+    }
+
+    .teams-quick-view h3 {
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+    }
+
+    .teams-budget-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .team-budget-card {
+        padding: 10px 12px;
+    }
+
+    .team-budget-logo {
+        width: 32px;
+        height: 32px;
+        font-size: 0.75rem;
+    }
+
+    .team-budget-name {
+        font-size: 0.85rem;
+    }
+
+    .team-budget-slots {
+        font-size: 0.7rem;
+    }
+
+    /* Auction Players Grid */
+    .auction-players {
+        margin-top: 24px;
+        padding: 0 8px;
+    }
+
+    .auction-players h3 {
+        font-size: 1.25rem;
+        margin-bottom: 16px;
+    }
+
+    .players-mini-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .player-mini-card {
+        padding: 12px 8px;
+    }
+
+    .mini-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .mini-name {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mini-role {
+        font-size: 0.65rem;
+    }
+
+    .mini-price {
+        font-size: 0.85rem;
+        margin-top: 6px;
+    }
+
+    /* Filters */
+    .filters-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .search-box {
+        min-width: auto;
+    }
+
+    .search-input {
+        padding: 10px 16px 10px 44px;
+    }
+
+    .filter-buttons {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* Players Grid */
+    .players-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .player-card-header {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .player-image {
+        width: 60px;
+        height: 60px;
+        font-size: 1.25rem;
+    }
+
+    .player-name {
+        font-size: 1rem;
+    }
+
+    .player-role-badge {
+        padding: 4px 8px;
+        font-size: 0.65rem;
+        top: 12px;
+        right: 12px;
+    }
+
+    .player-card-body {
+        padding: 16px;
+    }
+
+    .player-stats-row {
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .player-stat {
+        padding: 10px 8px;
+    }
+
+    .player-stat-value {
+        font-size: 0.8rem;
+    }
+
+    .player-stat-label {
+        font-size: 0.6rem;
+    }
+
+    /* Teams Grid */
+    .teams-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .team-header {
+        padding: 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .team-logo {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .team-name {
+        font-size: 1.1rem;
+    }
+
+    .team-edit-btn {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+
+    .budget-value {
+        font-size: 1.1rem;
+    }
+
+    .team-players {
+        padding: 12px 16px;
+    }
+
+    .team-player-item {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .team-player-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.65rem;
+    }
+
+    .team-player-name {
+        font-size: 0.85rem;
+    }
+
+    .team-player-role {
+        font-size: 0.65rem;
+        padding: 3px 6px;
+    }
+
+    .captain-badge {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+        margin-left: 4px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 24px 0;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .footer-brand {
+        font-size: 1.1rem;
+    }
+
+    .footer-text {
+        font-size: 0.875rem;
+    }
+
+    .footer-credit {
+        font-size: 0.75rem;
+    }
+
+    #adminResetBtn {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
+
+    /* Modals */
+    .modal-content {
+        margin: 10px;
+        max-height: 95vh;
+        border-radius: var(--radius-lg);
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-close {
+        width: 36px;
+        height: 36px;
+        top: 12px;
+        right: 12px;
+    }
+
+    /* Team Edit Modal */
+    .team-edit-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .team-edit-logo {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .team-edit-info h3 {
+        font-size: 1.25rem;
+    }
+
+    .team-edit-player-item {
+        padding: 10px 12px;
+    }
+
+    .team-edit-player-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
+    }
+
+    .team-edit-player-name {
+        font-size: 0.9rem;
+    }
+
+    .remove-player-btn {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+
+    .add-player-select {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+
+    /* Sold Overlay */
+    .sold-content .sold-badge {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+    }
+
+    .sold-player {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+
+    .sold-team {
+        font-size: 1.25rem;
+    }
+
+    .sold-price {
+        font-size: 2rem;
+    }
+
+    /* Random Overlay */
+    .random-spinner {
+        font-size: 4rem;
+    }
+
+    .random-text {
+        font-size: 1.25rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .players-mini-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bid-controls {
+        flex-direction: column;
+    }
+
+    .bid-btn {
+        width: 100%;
     }
 
     .auction-actions {
         flex-direction: column;
     }
 
-    .filters-wrapper {
+    .price-display {
         flex-direction: column;
-        align-items: stretch;
+        gap: 12px;
+    }
+}
+
+/* Landscape mode on phones */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
     }
 
-    .filter-buttons {
-        justify-content: center;
+    .hero-content {
+        padding: 20px 0;
     }
 
-    .players-grid {
-        grid-template-columns: 1fr;
+    .player-spotlight {
+        flex-direction: row;
+        text-align: left;
     }
 
-    .teams-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
+    .player-avatar {
+        width: 80px;
+        height: 80px;
     }
 }
 
@@ -1740,6 +2328,79 @@ body:not(.admin-mode) .bid-controls::after {
     color: var(--text-muted);
     font-size: 0.75rem;
     margin-top: 8px;
+}
+
+/* ========================================
+   Touch-friendly Improvements
+======================================== */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase tap targets for touch devices */
+    .btn {
+        min-height: 44px;
+    }
+
+    .nav-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .filter-btn {
+        min-height: 40px;
+    }
+
+    .bid-btn {
+        min-height: 44px;
+    }
+
+    .player-mini-card {
+        min-height: 120px;
+    }
+
+    /* Remove hover effects on touch devices */
+    .btn:hover,
+    .player-card:hover,
+    .player-mini-card:hover,
+    .team-budget-card:hover {
+        transform: none;
+    }
+
+    /* Add active states instead */
+    .btn:active {
+        transform: scale(0.98);
+    }
+
+    .player-card:active,
+    .player-mini-card:active {
+        transform: scale(0.98);
+        border-color: var(--primary);
+    }
+}
+
+/* Prevent text selection on buttons for touch */
+.btn,
+.bid-btn,
+.filter-btn {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Better scrolling on iOS */
+.players-mini-grid,
+.teams-budget-grid,
+.filter-buttons {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent zoom on input focus on iOS */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="number"],
+    input[type="password"],
+    select {
+        font-size: 16px !important;
+    }
 }
 
 /* ========================================
