@@ -5,7 +5,7 @@
     "shortName": "SS",
     "color": "#ef4444",
     "logo": "https://lh3.googleusercontent.com/d/1kdHs-9hJ7QC9yLIpD2NW0PhG_5vBpM2p=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Madhup Jamaiyar", "flatNo": "E-1105", "role": "All-rounder", "captain": true},
@@ -19,7 +19,7 @@
     "shortName": "TFB",
     "color": "#3b82f6",
     "logo": "https://lh3.googleusercontent.com/d/1MQcdAkY9urOGguh8bfQJvnSXF0TvxHnN=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Avinash Singh", "flatNo": "E-2001", "role": "All-rounder", "captain": true},
@@ -33,7 +33,7 @@
     "shortName": "PP",
     "color": "#10b981",
     "logo": "https://lh3.googleusercontent.com/d/1yfMa-0gJZGk03VoeYB_Rvv-bjkjEzCOa=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Dhawal Jain", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -47,7 +47,7 @@
     "shortName": "AS",
     "color": "#8b5cf6",
     "logo": "https://lh3.googleusercontent.com/d/1-0YCv4ZEHS5YNwhBTfqNppYmKPmQ0nML=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Saurabh Lele", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -61,7 +61,7 @@
     "shortName": "S6",
     "color": "#f59e0b",
     "logo": "https://lh3.googleusercontent.com/d/1tv-kN8gGwnKgswGag5CpgQXrWZMXnUoB=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Soumyaranjan Mohapatra", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -75,7 +75,7 @@
     "shortName": "E7",
     "color": "#06b6d4",
     "logo": "https://lh3.googleusercontent.com/d/1rWXxpoVatxzYXH6KFipZZ2gTjXemdBAw=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Nikhil Tandon", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -89,7 +89,7 @@
     "shortName": "7R",
     "color": "#ec4899",
     "logo": "https://lh3.googleusercontent.com/d/1xRUVhFh23yD8RaTdq7YiD8mdUrO0-Q2T=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Harshit Upadhyay", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -103,7 +103,7 @@
     "shortName": "BZ",
     "color": "#84cc16",
     "logo": "https://lh3.googleusercontent.com/d/1hYTWk_tRV5bHiVYrdJ5A5p1yTIai4Ho6=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Adarsh Dwivedi", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -117,7 +117,7 @@
     "shortName": "DND",
     "color": "#eab308",
     "logo": "",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Rahul Yadav", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -131,7 +131,7 @@
     "shortName": "TA",
     "color": "#64748b",
     "logo": "https://lh3.googleusercontent.com/d/15vjqfToqMy1YredEV0hWggmc_joKoN4p=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Naveen Gaurav", "flatNo": "", "role": "All-rounder", "captain": true},
@@ -145,7 +145,7 @@
     "shortName": "DDDD",
     "color": "#f97316",
     "logo": "https://lh3.googleusercontent.com/d/1Xre3FgTsVsRNZ3IM03DxMlCEvoV2IEnG=w400",
-    "budget": 3000,
+    "budget": 100000,
     "maxPlayers": 7,
     "players": [
       {"name": "Shreyas Jain", "flatNo": "E-1501", "role": "All-rounder", "captain": true},

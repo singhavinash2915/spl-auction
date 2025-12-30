@@ -402,7 +402,7 @@ function resetAuction() {
 
         // Reset teams - keep only original 3 players
         teams.forEach(team => {
-            team.budget = 3000;
+            team.budget = 100000;
             team.players = team.players.slice(0, 3);
         });
 
@@ -1215,7 +1215,7 @@ window.exportAuctionSummary = function() {
     csvContent += 'TEAM BUDGETS\n';
     csvContent += 'Team,Budget Remaining,Players,Amount Spent\n';
     teams.forEach(team => {
-        const spent = 3000 - team.budget;
+        const spent = 100000 - team.budget;
         csvContent += `"${team.name}",₹${team.budget},${team.players.length}/7,₹${spent}\n`;
     });
 
