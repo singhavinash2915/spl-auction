@@ -205,14 +205,12 @@ function initEventListeners() {
     if (adminResetBtn) adminResetBtn.addEventListener('click', showAdminModal);
     if (adminLoginBtn) adminLoginBtn.addEventListener('click', showAdminLoginModal);
 
-    // Bid Buttons - 500 and 1000
-    const bid500 = document.getElementById('bid500');
-    const bid1000 = document.getElementById('bid1000');
+    // Bid Button - 5000
+    const bid5000 = document.getElementById('bid5000');
     const resetBid = document.getElementById('resetBidBtn');
     const customBidBtn = document.getElementById('customBidBtn');
 
-    if (bid500) bid500.addEventListener('click', () => addBid(500));
-    if (bid1000) bid1000.addEventListener('click', () => addBid(1000));
+    if (bid5000) bid5000.addEventListener('click', () => addBid(5000));
     if (resetBid) resetBid.addEventListener('click', resetToBasePrice);
     if (customBidBtn) customBidBtn.addEventListener('click', applyCustomBid);
 
@@ -402,7 +400,7 @@ function resetAuction() {
 
         // Reset teams - keep only original 3 players
         teams.forEach(team => {
-            team.budget = 100000;
+            team.budget = 1000000;
             team.players = team.players.slice(0, 3);
         });
 
@@ -1215,7 +1213,7 @@ window.exportAuctionSummary = function() {
     csvContent += 'TEAM BUDGETS\n';
     csvContent += 'Team,Budget Remaining,Players,Amount Spent\n';
     teams.forEach(team => {
-        const spent = 100000 - team.budget;
+        const spent = 1000000 - team.budget;
         csvContent += `"${team.name}",₹${team.budget},${team.players.length}/7,₹${spent}\n`;
     });
 
