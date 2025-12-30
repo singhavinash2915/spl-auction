@@ -116,7 +116,14 @@ function updateAdminUI() {
     const adminLoginBtn = document.getElementById('adminLoginBtn');
 
     if (isAdminMode) {
-        adminControls.forEach(el => el.style.display = '');
+        adminControls.forEach(el => {
+            // Use inline-flex for buttons, block for other elements
+            if (el.tagName === 'BUTTON') {
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'block';
+            }
+        });
         if (adminStatus) adminStatus.textContent = 'Admin Mode Active';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Logout Admin';
         document.body.classList.add('admin-mode');
