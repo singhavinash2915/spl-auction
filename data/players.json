@@ -36,7 +36,7 @@
     "status": "available",
     "soldTo": null,
     "soldPrice": null,
-    "photo": "https://lh3.googleusercontent.com/d/1ezzNGOJX8A0h3IrR-gAqKVQUdyTADOeC=w400"
+    "photo": "https://lh3.googleusercontent.com/d/1AUpoliPvc-sZX7RdiKY8kpdUb6exOPh2=w400"
   },
   {
     "id": 4,
@@ -70,7 +70,7 @@
     "flatNo": "",
     "role": "Wicketkeeper",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -96,7 +96,7 @@
     "flatNo": "H-1603",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -122,7 +122,7 @@
     "flatNo": "C-1101",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -135,7 +135,7 @@
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -161,7 +161,7 @@
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -222,24 +222,11 @@
   },
   {
     "id": 18,
-    "name": "Sumit Khokhar",
-    "flatNo": "",
-    "role": "All-rounder",
-    "battingStyle": "Right-hand bat",
-    "bowlingStyle": "Right-arm medium",
-    "basePrice": 500,
-    "status": "available",
-    "soldTo": null,
-    "soldPrice": null,
-    "photo": "https://lh3.googleusercontent.com/d/1kRw4sM9YBUyHsF-PHbz4I8ugRAFF5WNV=w400"
-  },
-  {
-    "id": 19,
     "name": "Ramakant Singh",
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -247,7 +234,7 @@
     "photo": "https://lh3.googleusercontent.com/d/12NSf919V62_FKVW6JSWMrAY5-prax7lT=w400"
   },
   {
-    "id": 20,
+    "id": 19,
     "name": "Satya Dwivedi",
     "flatNo": "",
     "role": "Bowler",
@@ -260,12 +247,12 @@
     "photo": "https://lh3.googleusercontent.com/d/1pAIk2F1HC6cp403fJ90rD8qxr04dYVqS=w400"
   },
   {
-    "id": 21,
+    "id": 20,
     "name": "Avinash Saxena",
     "flatNo": "E-701",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -273,12 +260,12 @@
     "photo": "https://lh3.googleusercontent.com/d/1EYwKe_obsPmY4EQn6VXclJ6jTaJkJndh=w400"
   },
   {
-    "id": 22,
+    "id": 21,
     "name": "Bhanu Pratap Singh",
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -286,7 +273,7 @@
     "photo": "https://lh3.googleusercontent.com/d/1csg7tn6olKyTbKP6ntFDToB2h4BTwDOC=w400"
   },
   {
-    "id": 23,
+    "id": 22,
     "name": "Jagadeesh",
     "flatNo": "",
     "role": "All-rounder",
@@ -299,12 +286,12 @@
     "photo": "https://lh3.googleusercontent.com/d/1Fe4U59Ccxzf9jqLHkaLIQd1IyRYfGbtf=w400"
   },
   {
-    "id": 24,
+    "id": 23,
     "name": "Amit Pandey",
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -312,7 +299,7 @@
     "photo": "https://lh3.googleusercontent.com/d/1kPjJpteXGYBL5_DTDMUfekC5i3Uv6aG4=w400"
   },
   {
-    "id": 25,
+    "id": 24,
     "name": "Kaushik Raj",
     "flatNo": "I-701",
     "role": "All-rounder",
@@ -325,12 +312,12 @@
     "photo": "https://lh3.googleusercontent.com/d/1jMr6lI-yfxdykvqyGq6pi4PL2D60jra7=w400"
   },
   {
-    "id": 26,
+    "id": 25,
     "name": "Roshan Gupta",
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -338,7 +325,7 @@
     "photo": "https://lh3.googleusercontent.com/d/1xJiv6sVV7JP6GPhqIlVOwPT6J0XXAiVn=w400"
   },
   {
-    "id": 27,
+    "id": 26,
     "name": "Gopinath C",
     "flatNo": "",
     "role": "All-rounder",
@@ -351,7 +338,7 @@
     "photo": "https://lh3.googleusercontent.com/d/1-g1PDiQB4vWejhqY1NY4QLvpOtEadkZ1=w400"
   },
   {
-    "id": 28,
+    "id": 27,
     "name": "Pratik Patil",
     "flatNo": "",
     "role": "All-rounder",
@@ -364,12 +351,12 @@
     "photo": "https://lh3.googleusercontent.com/d/1lqPTJDhad167wN9qIm-YwNvM06QqmKdk=w400"
   },
   {
-    "id": 29,
+    "id": 28,
     "name": "Bhagwat Bedade",
     "flatNo": "",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -377,7 +364,7 @@
     "photo": "https://lh3.googleusercontent.com/d/1irYX8nUyXKDRDvxTXRROxZjfxestkM4C=w400"
   },
   {
-    "id": 30,
+    "id": 29,
     "name": "Prasad Dudhe",
     "flatNo": "",
     "role": "All-rounder",
@@ -390,7 +377,7 @@
     "photo": "https://lh3.googleusercontent.com/d/1AOja3LK0fZ5rChCDWG85bkNwNN3FUu8k=w400"
   },
   {
-    "id": 31,
+    "id": 30,
     "name": "Ravi Sinha",
     "flatNo": "B-1601",
     "role": "All-rounder",
@@ -403,12 +390,12 @@
     "photo": "https://lh3.googleusercontent.com/d/1emEMwBecurGb_4-fnhKvAMtnHGaVNBb_=w400"
   },
   {
-    "id": 32,
+    "id": 31,
     "name": "Shubham Chavhan",
     "flatNo": "A-404",
     "role": "Batsman",
     "battingStyle": "Right-hand bat",
-    "bowlingStyle": "None",
+    "bowlingStyle": "-",
     "basePrice": 500,
     "status": "available",
     "soldTo": null,
@@ -416,8 +403,21 @@
     "photo": "https://lh3.googleusercontent.com/d/1IFtZl05aNxWQLVbcTHBr33Sb8TtAGhQc=w400"
   },
   {
+    "id": 32,
+    "name": "Pratik Dange",
+    "flatNo": "A-404",
+    "role": "All-rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1MCCuavauXnsRZMWLG7leUssejdkIlQ66=w400"
+  },
+  {
     "id": 33,
-    "name": "Atharva Jaiswal",
+    "name": "Niket Nema",
     "flatNo": "",
     "role": "All-rounder",
     "battingStyle": "Right-hand bat",
@@ -426,6 +426,149 @@
     "status": "available",
     "soldTo": null,
     "soldPrice": null,
-    "photo": "https://lh3.googleusercontent.com/d/1YDaMXivgAHxcrIIxqn15Z8-NbxNbjLZi=w400"
+    "photo": "https://lh3.googleusercontent.com/d/1yiCiq_YCCUxMXt8SRcj4g6I8TLK8Bfy4=w400"
+  },
+  {
+    "id": 34,
+    "name": "Piyush Pankaj",
+    "flatNo": "E-1806",
+    "role": "All-rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1vBYzWWS4IcG-5-kHkxWm4UNaXa4zmt_m=w400"
+  },
+  {
+    "id": 35,
+    "name": "Atharva Dhamse",
+    "flatNo": "",
+    "role": "All-rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1szCzvUjj4c8aiapOrb2euI99-Upd3Ur2=w400"
+  },
+  {
+    "id": 36,
+    "name": "Abhishek Bhatt",
+    "flatNo": "I-1405",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Medium Fast",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1_4Qd2UU9XzqMfb6MH26Sk3wcvI100_nz=w400"
+  },
+  {
+    "id": 37,
+    "name": "Nishant Pandey",
+    "flatNo": "",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Medium Fast",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1Y6DSxP5halnrCpD9JIW4L2l0KblGBLW2=w400"
+  },
+  {
+    "id": 38,
+    "name": "Nikhil Bhan",
+    "flatNo": "",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "-",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1jAkM8FvUYirKEqn8ZIwvgcCV-EMk8QtT=w400"
+  },
+  {
+    "id": 39,
+    "name": "Saurabh Dixit",
+    "flatNo": "",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "-",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1AcxyhULvZVdZkC6bqGRQqDeg2Drfxb2w=w400"
+  },
+  {
+    "id": 40,
+    "name": "Keyur Sanghvi",
+    "flatNo": "",
+    "role": "All-rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1vf-qC04cdCafHFIBMmIQ3xQDwNN07bAB=w400"
+  },
+  {
+    "id": 41,
+    "name": "Rahul Verma",
+    "flatNo": "",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "-",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1H3zWcgog78umBFfCe2FpcLEJN2cyL8oa=w400"
+  },
+  {
+    "id": 42,
+    "name": "Ajinkya Gharpure",
+    "flatNo": "",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Medium Fast",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1TJyPSyaAbmFXW1h4xICV21lb5-1hHo7x=w400"
+  },
+  {
+    "id": 43,
+    "name": "Yogesh Pitale",
+    "flatNo": "",
+    "role": "All-rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1_qVEi6gJiNTWLcPAvH3dTz9G_A67dKQD=w400"
+  },
+  {
+    "id": 44,
+    "name": "Jayesh Biradar",
+    "flatNo": "",
+    "role": "All-rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "basePrice": 500,
+    "status": "available",
+    "soldTo": null,
+    "soldPrice": null,
+    "photo": "https://lh3.googleusercontent.com/d/1mZ3cNtCfySGYK6RJ6M7PpbhH09npx-QL=w400"
   }
 ]
