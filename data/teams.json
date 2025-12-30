@@ -138,5 +138,19 @@
       {"name": "Lokesh Goel", "flatNo": "", "role": "Batsman", "captain": false},
       {"name": "Aditya Purohit", "flatNo": "", "role": "Bowler", "captain": false}
     ]
+  },
+  {
+    "id": 11,
+    "name": "Dum Dum Diga Diga",
+    "shortName": "DDDD",
+    "color": "#f97316",
+    "logo": "https://lh3.googleusercontent.com/d/1Xre3FgTsVsRNZ3IM03DxMlCEvoV2IEnG=w400",
+    "budget": 3000,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Shreyas Jain", "flatNo": "E-1501", "role": "All-rounder", "captain": true},
+      {"name": "Atharva Jaiswal", "flatNo": "A-1204", "role": "All-rounder", "captain": false},
+      {"name": "Akshay Singhal", "flatNo": "E-906", "role": "All-rounder", "captain": false}
+    ]
   }
 ]
