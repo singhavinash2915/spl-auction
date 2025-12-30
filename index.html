@@ -122,6 +122,9 @@
                 <button class="btn btn-accent" id="randomPickBtn">
                     <span class="btn-icon">🎲</span> Random Pick
                 </button>
+                <button class="btn btn-secondary admin-only" id="addPlayerBtn" style="display: none;">
+                    <span class="btn-icon">+</span> Add Player
+                </button>
             </div>
 
             <!-- Current Auction Card -->
@@ -380,6 +383,68 @@
                     <input type="password" id="adminLoginPassword" class="admin-input" placeholder="Enter password">
                 </div>
                 <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="verifyAdminLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Player Modal -->
+    <div class="modal" id="addPlayerModal">
+        <div class="modal-overlay" onclick="closeAddPlayerModal()"></div>
+        <div class="modal-content modal-medium">
+            <button class="modal-close" aria-label="Close modal" onclick="closeAddPlayerModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 20px; text-align: center;">Add New Player (Ad-hoc)</h3>
+                <div class="add-player-form">
+                    <div class="form-group">
+                        <label>Player Name *</label>
+                        <input type="text" id="newPlayerName" class="form-input" placeholder="Enter player name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Flat No</label>
+                            <input type="text" id="newPlayerFlat" class="form-input" placeholder="e.g., A-101">
+                        </div>
+                        <div class="form-group">
+                            <label>Role *</label>
+                            <select id="newPlayerRole" class="form-input">
+                                <option value="All-rounder">All-rounder</option>
+                                <option value="Batsman">Batsman</option>
+                                <option value="Bowler">Bowler</option>
+                                <option value="Wicketkeeper">Wicketkeeper</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Batting Style</label>
+                            <select id="newPlayerBatting" class="form-input">
+                                <option value="Right-hand bat">Right-hand bat</option>
+                                <option value="Left-hand bat">Left-hand bat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Bowling Style</label>
+                            <select id="newPlayerBowling" class="form-input">
+                                <option value="Right-arm medium">Right-arm medium</option>
+                                <option value="Left-arm medium">Left-arm medium</option>
+                                <option value="Medium Fast">Medium Fast</option>
+                                <option value="Right-arm off-spin">Right-arm off-spin</option>
+                                <option value="Left-arm spin">Left-arm spin</option>
+                                <option value="-">None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Base Price</label>
+                        <input type="number" id="newPlayerBasePrice" class="form-input" value="30000" min="0">
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="addNewPlayer()">Add Player</button>
+                </div>
             </div>
         </div>
     </div>

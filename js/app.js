@@ -205,6 +205,10 @@ function initEventListeners() {
     if (adminResetBtn) adminResetBtn.addEventListener('click', showAdminModal);
     if (adminLoginBtn) adminLoginBtn.addEventListener('click', showAdminLoginModal);
 
+    // Add Player Button
+    const addPlayerBtn = document.getElementById('addPlayerBtn');
+    if (addPlayerBtn) addPlayerBtn.addEventListener('click', showAddPlayerModal);
+
     // Bid Button - 5000
     const bid5000 = document.getElementById('bid5000');
     const resetBid = document.getElementById('resetBidBtn');
@@ -228,6 +232,7 @@ function initEventListeners() {
             closeAdminModal();
             closeTeamEditModal();
             closeAdminLoginModal();
+            closeAddPlayerModal();
         }
     });
 
@@ -803,6 +808,95 @@ window.openTeamEditModal = openTeamEditModal;
 window.closeTeamEditModal = closeTeamEditModal;
 window.removePlayerFromTeam = removePlayerFromTeam;
 window.addPlayerToTeam = addPlayerToTeam;
+
+// ========================================
+// Add Player Functions (Ad-hoc)
+// ========================================
+function showAddPlayerModal() {
+    if (!isAdminMode) {
+        alert('Only Admin can add players!');
+        return;
+    }
+    // Reset form
+    document.getElementById('newPlayerName').value = '';
+    document.getElementById('newPlayerFlat').value = '';
+    document.getElementById('newPlayerRole').value = 'All-rounder';
+    document.getElementById('newPlayerBatting').value = 'Right-hand bat';
+    document.getElementById('newPlayerBowling').value = 'Right-arm medium';
+    document.getElementById('newPlayerBasePrice').value = '30000';
+
+    document.getElementById('addPlayerModal').classList.add('active');
+    document.getElementById('newPlayerName').focus();
+}
+
+function closeAddPlayerModal() {
+    document.getElementById('addPlayerModal').classList.remove('active');
+}
+
+function addNewPlayer() {
+    const name = document.getElementById('newPlayerName').value.trim();
+    const flatNo = document.getElementById('newPlayerFlat').value.trim();
+    const role = document.getElementById('newPlayerRole').value;
+    const battingStyle = document.getElementById('newPlayerBatting').value;
+    const bowlingStyle = document.getElementById('newPlayerBowling').value;
+    const basePrice = parseInt(document.getElementById('newPlayerBasePrice').value) || 30000;
+
+    if (!name) {
+        alert('Please enter player name!');
+        return;
+    }
+
+    // Check if player already exists
+    const existingPlayer = players.find(p => p.name.toLowerCase() === name.toLowerCase());
+    if (existingPlayer) {
+        alert('A player with this name already exists!');
+        return;
+    }
+
+    // Generate new ID (max ID + 1)
+    const newId = players.length > 0 ? Math.max(...players.map(p => p.id)) + 1 : 1;
+
+    // Create new player object
+    const newPlayer = {
+        id: newId,
+        name: name,
+        flatNo: flatNo,
+        role: role,
+        battingStyle: battingStyle,
+        bowlingStyle: bowlingStyle,
+        basePrice: basePrice,
+        status: 'available',
+        soldTo: null,
+        soldPrice: null,
+        photo: '' // No photo for ad-hoc players
+    };
+
+    // Add to players array
+    players.push(newPlayer);
+
+    // Save to localStorage
+    saveToLocalStorage();
+
+    // Close modal
+    closeAddPlayerModal();
+
+    // Refresh UI
+    filterAndRenderPlayers();
+    renderAuctionPlayers();
+    updateStats();
+
+    alert(`Player "${name}" added successfully!`);
+
+    // Optionally select this player for auction immediately
+    if (document.getElementById('auctionArena').style.display !== 'none') {
+        selectPlayerForAuction(newPlayer);
+    }
+}
+
+// Make functions globally available
+window.showAddPlayerModal = showAddPlayerModal;
+window.closeAddPlayerModal = closeAddPlayerModal;
+window.addNewPlayer = addNewPlayer;
 
 // ========================================
 // Render Functions
