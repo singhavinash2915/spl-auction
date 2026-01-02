@@ -456,6 +456,31 @@
         </div>
     </div>
 
+    <!-- Edit CricHeroes Modal -->
+    <div class="modal" id="editCricHeroesModal">
+        <div class="modal-overlay" onclick="closeEditCricHeroesModal()"></div>
+        <div class="modal-content modal-small">
+            <button class="modal-close" aria-label="Close modal" onclick="closeEditCricHeroesModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 8px; text-align: center;">Edit CricHeroes Profile</h3>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;" id="editCricHeroesPlayerName"></p>
+                <div class="form-group">
+                    <label>CricHeroes Profile URL</label>
+                    <input type="url" id="editCricHeroesUrl" class="form-input" placeholder="https://cricheroes.com/player/...">
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 16px;">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="closeEditCricHeroesModal()">Cancel</button>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="saveCricHeroesUrl()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/app.js"></script>
 </body>
 </html>

@@ -240,6 +240,7 @@ function initEventListeners() {
             closeTeamEditModal();
             closeAdminLoginModal();
             closeAddPlayerModal();
+            closeEditCricHeroesModal();
         }
     });
 
@@ -1168,11 +1169,22 @@ function openPlayerModal(playerId) {
                     </div>
                 ` : ''}
 
-                ${player.cricHeroesUrl ? `
-                    <a href="${player.cricHeroesUrl}" target="_blank" class="cricheroes-link modal-cricheroes">
-                        <span class="cricheroes-icon">📊</span> View Stats on CricHeroes
-                    </a>
-                ` : ''}
+                <div class="cricheroes-section">
+                    ${player.cricHeroesUrl ? `
+                        <a href="${player.cricHeroesUrl}" target="_blank" class="cricheroes-link modal-cricheroes">
+                            <span class="cricheroes-icon">📊</span> View Stats on CricHeroes
+                        </a>
+                    ` : `
+                        <div class="no-cricheroes ${isAdminMode ? '' : 'hidden'}">
+                            <span class="no-stats-text">No CricHeroes profile linked</span>
+                        </div>
+                    `}
+                    ${isAdminMode ? `
+                        <button class="edit-cricheroes-btn" onclick="showEditCricHeroesModal(${player.id})">
+                            ${player.cricHeroesUrl ? 'Edit' : 'Add'} CricHeroes Link
+                        </button>
+                    ` : ''}
+                </div>
             </div>
             <div class="player-modal-photo">
                 ${player.photo
@@ -1190,9 +1202,54 @@ function closePlayerModal() {
     document.getElementById('playerModal').classList.remove('active');
 }
 
+// Edit CricHeroes Link
+let editingPlayerId = null;
+
+function showEditCricHeroesModal(playerId) {
+    editingPlayerId = playerId;
+    const player = players.find(p => p.id === playerId);
+    if (!player) return;
+
+    document.getElementById('editCricHeroesUrl').value = player.cricHeroesUrl || '';
+    document.getElementById('editCricHeroesPlayerName').textContent = player.name;
+    document.getElementById('editCricHeroesModal').classList.add('active');
+    document.getElementById('editCricHeroesUrl').focus();
+}
+
+function closeEditCricHeroesModal() {
+    document.getElementById('editCricHeroesModal').classList.remove('active');
+    editingPlayerId = null;
+}
+
+function saveCricHeroesUrl() {
+    if (editingPlayerId === null) return;
+
+    const player = players.find(p => p.id === editingPlayerId);
+    if (!player) return;
+
+    const url = document.getElementById('editCricHeroesUrl').value.trim();
+    player.cricHeroesUrl = url;
+
+    saveToLocalStorage();
+    closeEditCricHeroesModal();
+
+    // Refresh the player modal
+    openPlayerModal(editingPlayerId);
+
+    // Refresh auction arena if this player is selected
+    if (currentPlayer && currentPlayer.id === editingPlayerId) {
+        selectPlayerForAuction(player);
+    }
+
+    alert('CricHeroes link updated successfully!');
+}
+
 // Make functions globally available
 window.openPlayerModal = openPlayerModal;
 window.closePlayerModal = closePlayerModal;
+window.showEditCricHeroesModal = showEditCricHeroesModal;
+window.closeEditCricHeroesModal = closeEditCricHeroesModal;
+window.saveCricHeroesUrl = saveCricHeroesUrl;
 
 // ========================================
 // Utility Functions

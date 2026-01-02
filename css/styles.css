@@ -3125,6 +3125,41 @@ body.admin-mode .header-actions .btn-secondary {
     margin-top: 20px;
 }
 
+.cricheroes-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.no-cricheroes {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.no-cricheroes.hidden {
+    display: none;
+}
+
+.edit-cricheroes-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: fit-content;
+}
+
+.edit-cricheroes-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
+}
+
 /* ========================================
    Footer Credit
 ======================================== */
