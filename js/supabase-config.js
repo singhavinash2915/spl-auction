@@ -15,8 +15,14 @@ let supabase = null;
 
 if (SUPABASE_ENABLED && SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
     try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('Supabase client initialized successfully');
+        // Handle different ways Supabase CDN might expose the client
+        const createClient = window.supabase?.createClient || window.createClient;
+        if (createClient) {
+            supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase client initialized successfully');
+        } else {
+            console.error('Supabase createClient not found. Make sure CDN is loaded.');
+        }
     } catch (error) {
         console.error('Failed to initialize Supabase:', error);
         supabase = null;
