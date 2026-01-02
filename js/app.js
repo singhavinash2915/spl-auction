@@ -66,7 +66,41 @@ window.toggleTheme = toggleTheme;
 // Load Data
 // ========================================
 async function loadData() {
-    // Try to load from localStorage first
+    // Try Supabase first if available
+    if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+        console.log('Loading data from Supabase...');
+        try {
+            const [supabasePlayers, supabaseTeams] = await Promise.all([
+                loadPlayersFromSupabase(),
+                loadTeamsFromSupabase()
+            ]);
+
+            if (supabasePlayers && supabasePlayers.length > 0) {
+                players = supabasePlayers;
+                console.log('Loaded players from Supabase:', players.length);
+            }
+
+            if (supabaseTeams && supabaseTeams.length > 0) {
+                // Parse players JSON string back to array
+                teams = supabaseTeams.map(team => ({
+                    ...team,
+                    players: typeof team.players === 'string' ? JSON.parse(team.players) : team.players
+                }));
+                console.log('Loaded teams from Supabase:', teams.length);
+            }
+
+            if (players.length > 0 && teams.length > 0) {
+                saveToLocalStorage(); // Keep localStorage in sync
+                initializeApp();
+                setupRealtimeSubscriptions();
+                return;
+            }
+        } catch (error) {
+            console.error('Error loading from Supabase, falling back to localStorage:', error);
+        }
+    }
+
+    // Fallback: Try to load from localStorage
     const savedPlayers = localStorage.getItem(STORAGE_KEYS.PLAYERS);
     const savedTeams = localStorage.getItem(STORAGE_KEYS.TEAMS);
 
@@ -85,6 +119,12 @@ async function loadData() {
             teams = await teamsRes.json();
             saveToLocalStorage();
             initializeApp();
+
+            // If Supabase is available, sync initial data
+            if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+                await syncToSupabase();
+                setupRealtimeSubscriptions();
+            }
         } catch (error) {
             console.error('Error loading data:', error);
         }
@@ -100,11 +140,145 @@ function initializeApp() {
     populateTeamSelect();
     updateStats();
     updateAdminUI();
+    updateSyncStatus();
 }
 
 function saveToLocalStorage() {
     localStorage.setItem(STORAGE_KEYS.PLAYERS, JSON.stringify(players));
     localStorage.setItem(STORAGE_KEYS.TEAMS, JSON.stringify(teams));
+}
+
+// ========================================
+// Supabase Sync Functions
+// ========================================
+async function syncToSupabase() {
+    if (typeof isSupabaseAvailable !== 'function' || !isSupabaseAvailable()) return;
+
+    console.log('Syncing data to Supabase...');
+    try {
+        await Promise.all([
+            saveAllPlayersToSupabase(players),
+            saveAllTeamsToSupabase(teams)
+        ]);
+        console.log('Data synced to Supabase successfully');
+        updateSyncStatus('synced');
+    } catch (error) {
+        console.error('Error syncing to Supabase:', error);
+        updateSyncStatus('error');
+    }
+}
+
+// Save data to both localStorage and Supabase
+async function saveData() {
+    // Always save to localStorage (fallback)
+    saveToLocalStorage();
+
+    // Also save to Supabase if available
+    if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+        await syncToSupabase();
+    }
+}
+
+// Setup real-time subscriptions for live updates
+function setupRealtimeSubscriptions() {
+    if (typeof isSupabaseAvailable !== 'function' || !isSupabaseAvailable()) return;
+
+    console.log('Setting up real-time subscriptions...');
+
+    // Subscribe to player changes
+    subscribeToPlayers((payload) => {
+        handlePlayerChange(payload);
+    });
+
+    // Subscribe to team changes
+    subscribeToTeams((payload) => {
+        handleTeamChange(payload);
+    });
+}
+
+// Handle real-time player changes from other users
+function handlePlayerChange(payload) {
+    console.log('Real-time player update:', payload);
+
+    if (payload.eventType === 'UPDATE' || payload.eventType === 'INSERT') {
+        const updatedPlayer = payload.new;
+        const index = players.findIndex(p => p.id === updatedPlayer.id);
+
+        if (index !== -1) {
+            players[index] = updatedPlayer;
+        } else {
+            players.push(updatedPlayer);
+        }
+    } else if (payload.eventType === 'DELETE') {
+        const deletedId = payload.old.id;
+        players = players.filter(p => p.id !== deletedId);
+    }
+
+    // Update localStorage and refresh UI
+    saveToLocalStorage();
+    filteredPlayers = [...players];
+    renderPlayers();
+    renderAuctionPlayers();
+    updateStats();
+
+    // Update current player display if affected
+    if (currentPlayer && payload.new && currentPlayer.id === payload.new.id) {
+        currentPlayer = payload.new;
+        selectPlayerForAuction(currentPlayer);
+    }
+}
+
+// Handle real-time team changes from other users
+function handleTeamChange(payload) {
+    console.log('Real-time team update:', payload);
+
+    if (payload.eventType === 'UPDATE' || payload.eventType === 'INSERT') {
+        const updatedTeam = {
+            ...payload.new,
+            players: typeof payload.new.players === 'string'
+                ? JSON.parse(payload.new.players)
+                : payload.new.players
+        };
+        const index = teams.findIndex(t => t.id === updatedTeam.id);
+
+        if (index !== -1) {
+            teams[index] = updatedTeam;
+        } else {
+            teams.push(updatedTeam);
+        }
+    } else if (payload.eventType === 'DELETE') {
+        const deletedId = payload.old.id;
+        teams = teams.filter(t => t.id !== deletedId);
+    }
+
+    // Update localStorage and refresh UI
+    saveToLocalStorage();
+    renderTeams();
+    renderTeamsBudgetGrid();
+    populateTeamSelect();
+}
+
+// Update sync status indicator in UI
+function updateSyncStatus(status) {
+    const indicator = document.getElementById('syncStatus');
+    if (!indicator) return;
+
+    if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+        indicator.style.display = 'inline-flex';
+        if (status === 'synced') {
+            indicator.innerHTML = '<span class="sync-dot synced"></span> Live Sync';
+            indicator.title = 'Real-time sync enabled - all users see the same data';
+        } else if (status === 'error') {
+            indicator.innerHTML = '<span class="sync-dot error"></span> Sync Error';
+            indicator.title = 'Sync error - using local data';
+        } else {
+            indicator.innerHTML = '<span class="sync-dot syncing"></span> Syncing...';
+            indicator.title = 'Syncing data...';
+        }
+    } else {
+        indicator.innerHTML = '<span class="sync-dot offline"></span> Local Only';
+        indicator.title = 'Data stored locally - configure Supabase for real-time sync';
+    }
 }
 
 // ========================================
@@ -420,7 +594,7 @@ function resetAuction() {
         // Reset picked players session
         pickedPlayersInSession = [];
 
-        saveToLocalStorage();
+        saveData(); // Save to both localStorage and Supabase
 
         // Reset UI
         document.getElementById('auctionArena').style.display = 'none';
@@ -568,7 +742,7 @@ function markAsSold() {
         soldPrice: currentBid
     });
 
-    saveToLocalStorage();
+    saveData(); // Save to both localStorage and Supabase
 
     // Show sold animation
     showSoldAnimation(currentPlayer, team, currentBid);
@@ -611,7 +785,7 @@ function markAsUnsold() {
     }
 
     currentPlayer.status = 'unsold';
-    saveToLocalStorage();
+    saveData(); // Save to both localStorage and Supabase
 
     currentPlayer = null;
     currentBid = 0;
@@ -755,7 +929,7 @@ function removePlayerFromTeam(teamId, playerIndex) {
             playerData.soldPrice = null;
         }
 
-        saveToLocalStorage();
+        saveData(); // Save to both localStorage and Supabase
 
         // Refresh UI
         renderTeams();
@@ -808,7 +982,7 @@ function addPlayerToTeam(teamId) {
         soldPrice: price
     });
 
-    saveToLocalStorage();
+    saveData(); // Save to both localStorage and Supabase
 
     // Refresh UI
     renderTeams();
@@ -924,8 +1098,8 @@ function addNewPlayer() {
     // Add to players array
     players.push(newPlayer);
 
-    // Save to localStorage
-    saveToLocalStorage();
+    // Save to localStorage and Supabase
+    saveData();
 
     // Close modal
     closeAddPlayerModal();
@@ -1258,7 +1432,7 @@ function saveCricHeroesUrl() {
     const url = document.getElementById('editCricHeroesUrl').value.trim();
     player.cricHeroesUrl = url;
 
-    saveToLocalStorage();
+    saveData(); // Save to both localStorage and Supabase
     closeEditCricHeroesModal();
 
     // Refresh the player modal

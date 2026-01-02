@@ -3161,6 +3161,57 @@ body.admin-mode .header-actions .btn-secondary {
 }
 
 /* ========================================
+   Sync Status Indicator
+======================================== */
+.sync-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 4px 10px;
+    background: var(--surface);
+    border-radius: 20px;
+    margin-left: 12px;
+}
+
+.sync-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.sync-dot.synced {
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.sync-dot.syncing {
+    background: #f59e0b;
+    animation: blink 1s infinite;
+}
+
+.sync-dot.error {
+    background: #ef4444;
+}
+
+.sync-dot.offline {
+    background: #6b7280;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* ========================================
    Footer Credit
 ======================================== */
 .footer-center {

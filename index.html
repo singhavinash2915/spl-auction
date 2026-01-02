@@ -36,6 +36,9 @@
                     </a>
                 </div>
                 <div class="top-bar-text">Season 5.0 | Live Auction</div>
+                <div id="syncStatus" class="sync-status" title="Data sync status">
+                    <span class="sync-dot offline"></span> Local Only
+                </div>
             </div>
         </div>
     </div>
@@ -486,6 +489,9 @@
         </div>
     </div>
 
+    <!-- Supabase CDN (for real-time sync) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
