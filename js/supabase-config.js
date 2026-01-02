@@ -2,14 +2,13 @@
 // Supabase Configuration for SPL Auction
 // ========================================
 
-// IMPORTANT: Replace these with your actual Supabase credentials
-// Get these from: https://app.supabase.com/project/YOUR_PROJECT/settings/api
-const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // e.g., 'https://xyzcompany.supabase.co'
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // e.g., 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+// Supabase credentials
+const SUPABASE_URL = 'https://qocletxuqmkpmksurluc.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvY2xldHh1cW1rcG1rc3VybHVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNDE2MTksImV4cCI6MjA4MjkxNzYxOX0.JY3gCSKNKrSy3ViNEuXrSIwRY5LUsi0S4zBR1XsHsLc';
 
 // Feature flag to enable/disable Supabase sync
 // Set to false to use localStorage only (fallback mode)
-const SUPABASE_ENABLED = false; // Change to true after setting up Supabase
+const SUPABASE_ENABLED = true;
 
 // Initialize Supabase client (will be null if not configured)
 let supabase = null;
