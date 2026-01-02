@@ -11,21 +11,24 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const SUPABASE_ENABLED = true;
 
 // Initialize Supabase client (will be null if not configured)
-let supabase = null;
+let supabaseClient = null;
 
 if (SUPABASE_ENABLED && SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
     try {
-        // Handle different ways Supabase CDN might expose the client
-        const createClient = window.supabase?.createClient || window.createClient;
-        if (createClient) {
-            supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // The CDN exposes supabase.createClient
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('Supabase client initialized successfully');
+        } else if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase client initialized successfully (window)');
         } else {
-            console.error('Supabase createClient not found. Make sure CDN is loaded.');
+            console.error('Supabase createClient not found. CDN may not have loaded.');
+            console.log('Available globals:', Object.keys(window).filter(k => k.toLowerCase().includes('supa')));
         }
     } catch (error) {
         console.error('Failed to initialize Supabase:', error);
-        supabase = null;
+        supabaseClient = null;
     }
 }
 
@@ -35,7 +38,7 @@ if (SUPABASE_ENABLED && SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KE
 
 // Check if Supabase is available and configured
 function isSupabaseAvailable() {
-    return supabase !== null && SUPABASE_ENABLED;
+    return supabaseClient !== null && SUPABASE_ENABLED;
 }
 
 // Load players from Supabase
@@ -43,7 +46,7 @@ async function loadPlayersFromSupabase() {
     if (!isSupabaseAvailable()) return null;
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('players')
             .select('*')
             .order('id');
@@ -61,7 +64,7 @@ async function loadTeamsFromSupabase() {
     if (!isSupabaseAvailable()) return null;
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('teams')
             .select('*')
             .order('id');
@@ -79,7 +82,7 @@ async function savePlayerToSupabase(player) {
     if (!isSupabaseAvailable()) return false;
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('players')
             .upsert(player, { onConflict: 'id' });
 
@@ -102,7 +105,7 @@ async function saveTeamToSupabase(team) {
             players: JSON.stringify(team.players)
         };
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('teams')
             .upsert(teamData, { onConflict: 'id' });
 
@@ -119,7 +122,7 @@ async function saveAllPlayersToSupabase(players) {
     if (!isSupabaseAvailable()) return false;
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('players')
             .upsert(players, { onConflict: 'id' });
 
@@ -142,7 +145,7 @@ async function saveAllTeamsToSupabase(teams) {
             players: JSON.stringify(team.players)
         }));
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('teams')
             .upsert(teamsData, { onConflict: 'id' });
 
@@ -158,7 +161,7 @@ async function saveAllTeamsToSupabase(teams) {
 function subscribeToPlayers(callback) {
     if (!isSupabaseAvailable()) return null;
 
-    return supabase
+    return supabaseClient
         .channel('players-changes')
         .on('postgres_changes',
             { event: '*', schema: 'public', table: 'players' },
@@ -174,7 +177,7 @@ function subscribeToPlayers(callback) {
 function subscribeToTeams(callback) {
     if (!isSupabaseAvailable()) return null;
 
-    return supabase
+    return supabaseClient
         .channel('teams-changes')
         .on('postgres_changes',
             { event: '*', schema: 'public', table: 'teams' },
@@ -191,7 +194,7 @@ async function insertPlayerToSupabase(player) {
     if (!isSupabaseAvailable()) return false;
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('players')
             .insert(player);
 
