@@ -454,6 +454,17 @@ function selectPlayerForAuction(player) {
     document.getElementById('basePrice').textContent = `₹${player.basePrice}`;
     document.getElementById('currentBid').textContent = `₹${currentBid}`;
 
+    // Update CricHeroes link
+    const cricHeroesLink = document.getElementById('currentPlayerCricHeroes');
+    if (cricHeroesLink) {
+        if (player.cricHeroesUrl) {
+            cricHeroesLink.href = player.cricHeroesUrl;
+            cricHeroesLink.style.display = 'inline-flex';
+        } else {
+            cricHeroesLink.style.display = 'none';
+        }
+    }
+
     // Reset custom bid input
     const customBidInput = document.getElementById('customBidInput');
     if (customBidInput) customBidInput.value = '';
@@ -831,6 +842,7 @@ function showAddPlayerModal() {
     document.getElementById('newPlayerBatting').value = 'Right-hand bat';
     document.getElementById('newPlayerBowling').value = 'Right-arm medium';
     document.getElementById('newPlayerBasePrice').value = '30000';
+    document.getElementById('newPlayerCricHeroes').value = '';
 
     document.getElementById('addPlayerModal').classList.add('active');
     document.getElementById('newPlayerName').focus();
@@ -847,6 +859,7 @@ function addNewPlayer() {
     const battingStyle = document.getElementById('newPlayerBatting').value;
     const bowlingStyle = document.getElementById('newPlayerBowling').value;
     const basePrice = parseInt(document.getElementById('newPlayerBasePrice').value) || 30000;
+    const cricHeroesUrl = document.getElementById('newPlayerCricHeroes').value.trim();
 
     if (!name) {
         alert('Please enter player name!');
@@ -875,7 +888,8 @@ function addNewPlayer() {
         status: 'available',
         soldTo: null,
         soldPrice: null,
-        photo: '' // No photo for ad-hoc players
+        photo: '', // No photo for ad-hoc players
+        cricHeroesUrl: cricHeroesUrl
     };
 
     // Add to players array
@@ -1152,6 +1166,12 @@ function openPlayerModal(playerId) {
                             <span class="team-name">${team.name}</span>
                         </div>
                     </div>
+                ` : ''}
+
+                ${player.cricHeroesUrl ? `
+                    <a href="${player.cricHeroesUrl}" target="_blank" class="cricheroes-link modal-cricheroes">
+                        <span class="cricheroes-icon">📊</span> View Stats on CricHeroes
+                    </a>
                 ` : ''}
             </div>
             <div class="player-modal-photo">

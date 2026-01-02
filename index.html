@@ -151,6 +151,9 @@
                                     <span class="skill-value" id="currentPlayerBowling">--</span>
                                 </div>
                             </div>
+                            <a href="#" id="currentPlayerCricHeroes" class="cricheroes-link" target="_blank" style="display: none;">
+                                <span class="cricheroes-icon">📊</span> View Stats on CricHeroes
+                            </a>
                         </div>
                     </div>
 
@@ -442,6 +445,10 @@
                     <div class="form-group">
                         <label>Base Price</label>
                         <input type="number" id="newPlayerBasePrice" class="form-input" value="30000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>CricHeroes Profile URL</label>
+                        <input type="url" id="newPlayerCricHeroes" class="form-input" placeholder="https://cricheroes.com/player/...">
                     </div>
                     <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="addNewPlayer()">Add Player</button>
                 </div>

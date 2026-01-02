@@ -3093,6 +3093,39 @@ body.admin-mode .header-actions .btn-secondary {
 }
 
 /* ========================================
+   CricHeroes Link Styles
+======================================== */
+.cricheroes-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #00b894, #00a085);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 184, 148, 0.3);
+}
+
+.cricheroes-link:hover {
+    background: linear-gradient(135deg, #00a085, #008f75);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 184, 148, 0.4);
+}
+
+.cricheroes-icon {
+    font-size: 1.1rem;
+}
+
+.modal-cricheroes {
+    margin-top: 20px;
+}
+
+/* ========================================
    Footer Credit
 ======================================== */
 .footer-center {
