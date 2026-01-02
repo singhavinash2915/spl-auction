@@ -93,6 +93,7 @@ async function loadData() {
                 saveToLocalStorage(); // Keep localStorage in sync
                 initializeApp();
                 setupRealtimeSubscriptions();
+                updateSyncStatus('synced'); // Show Live Sync status
                 return;
             }
         } catch (error) {
