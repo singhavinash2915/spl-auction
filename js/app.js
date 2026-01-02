@@ -843,10 +843,34 @@ function showAddPlayerModal() {
     document.getElementById('newPlayerBatting').value = 'Right-hand bat';
     document.getElementById('newPlayerBowling').value = 'Right-arm medium';
     document.getElementById('newPlayerBasePrice').value = '30000';
+    document.getElementById('newPlayerPhoto').value = '';
     document.getElementById('newPlayerCricHeroes').value = '';
 
     document.getElementById('addPlayerModal').classList.add('active');
     document.getElementById('newPlayerName').focus();
+}
+
+// Convert Google Drive link to direct image URL
+function convertGoogleDriveUrl(url) {
+    if (!url) return '';
+
+    // Extract file ID from various Google Drive URL formats
+    let fileId = '';
+
+    // Format: https://drive.google.com/file/d/FILE_ID/view
+    const match1 = url.match(/\/file\/d\/([^\/]+)/);
+    if (match1) fileId = match1[1];
+
+    // Format: https://drive.google.com/open?id=FILE_ID
+    const match2 = url.match(/[?&]id=([^&]+)/);
+    if (match2) fileId = match2[1];
+
+    if (fileId) {
+        return `https://lh3.googleusercontent.com/d/${fileId}=w400`;
+    }
+
+    // If already in correct format or not a Google Drive URL, return as is
+    return url;
 }
 
 function closeAddPlayerModal() {
@@ -860,6 +884,7 @@ function addNewPlayer() {
     const battingStyle = document.getElementById('newPlayerBatting').value;
     const bowlingStyle = document.getElementById('newPlayerBowling').value;
     const basePrice = parseInt(document.getElementById('newPlayerBasePrice').value) || 30000;
+    const photoUrl = document.getElementById('newPlayerPhoto').value.trim();
     const cricHeroesUrl = document.getElementById('newPlayerCricHeroes').value.trim();
 
     if (!name) {
@@ -877,6 +902,9 @@ function addNewPlayer() {
     // Generate new ID (max ID + 1)
     const newId = players.length > 0 ? Math.max(...players.map(p => p.id)) + 1 : 1;
 
+    // Convert Google Drive URL to direct image URL
+    const convertedPhotoUrl = convertGoogleDriveUrl(photoUrl);
+
     // Create new player object
     const newPlayer = {
         id: newId,
@@ -889,7 +917,7 @@ function addNewPlayer() {
         status: 'available',
         soldTo: null,
         soldPrice: null,
-        photo: '', // No photo for ad-hoc players
+        photo: convertedPhotoUrl,
         cricHeroesUrl: cricHeroesUrl
     };
 
