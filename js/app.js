@@ -730,15 +730,23 @@ function markAsSold() {
     const team = teams.find(t => t.id === parseInt(teamId));
     if (!team) return;
 
+    // Check if team already has 7 players
+    if (team.players.length >= 7) {
+        alert(`${team.name} already has 7 players!`);
+        return;
+    }
+
     // Check if team has budget
     if (team.budget < currentBid) {
         alert(`${team.name} doesn't have enough budget! Available: ₹${team.budget}`);
         return;
     }
 
-    // Check if team already has 7 players
-    if (team.players.length >= 7) {
-        alert(`${team.name} already has 7 players!`);
+    // Check max bid (must reserve budget for remaining slots at base price)
+    const maxBid = getMaxBidForTeam(team);
+    if (currentBid > maxBid) {
+        const remainingSlots = 7 - team.players.length - 1;
+        alert(`${team.name} can't bid more than ₹${maxBid}!\n\nThey need to reserve ₹${remainingSlots * 30000} (₹30,000 × ${remainingSlots} slots) for remaining players.`);
         return;
     }
 
@@ -874,15 +882,29 @@ async function deletePlayer(playerId) {
 // Make delete function globally available
 window.deletePlayer = deletePlayer;
 
+// Calculate max bid a team can make for current player
+// Formula: Budget - (remaining slots after this purchase * base price)
+function getMaxBidForTeam(team) {
+    if (!team) return 0;
+    const basePrice = 30000; // Base price for players
+    const currentSlots = team.players.length;
+    const maxSlots = 7;
+    const remainingSlotsAfterPurchase = maxSlots - currentSlots - 1; // -1 for current player being bought
+    const reserveForRemaining = remainingSlotsAfterPurchase * basePrice;
+    const maxBid = team.budget - reserveForRemaining;
+    return Math.max(maxBid, 0);
+}
+
 function populateTeamSelect() {
     const select = document.getElementById('buyingTeam');
     select.innerHTML = '<option value="">-- Select Team --</option>';
 
     teams.forEach(team => {
+        const maxBid = getMaxBidForTeam(team);
         const canBuy = team.players.length < 7 && team.budget > 0;
         const option = document.createElement('option');
         option.value = team.id;
-        option.textContent = `${team.name} (₹${team.budget}, ${team.players.length}/7)`;
+        option.textContent = `${team.name} (₹${team.budget}, ${team.players.length}/7, Max: ₹${maxBid})`;
         option.disabled = !canBuy;
         select.appendChild(option);
     });
