@@ -23,7 +23,8 @@ const STORAGE_KEYS = {
     PLAYERS: 'spl_players',
     TEAMS: 'spl_teams',
     ADMIN_MODE: 'spl_admin_mode',
-    THEME: 'spl_theme'
+    THEME: 'spl_theme',
+    DELETED_PLAYERS: 'spl_deleted_players' // Track deleted player IDs
 };
 
 // ========================================
@@ -584,7 +585,7 @@ function randomPickPlayer() {
 async function resetAuction() {
     if (confirm('Are you sure you want to reset all auction data? This will reload fresh data from JSON files and sync to Supabase.')) {
         try {
-            // Clear localStorage first
+            // Clear localStorage first (but keep deleted players list)
             localStorage.removeItem(STORAGE_KEYS.PLAYERS);
             localStorage.removeItem(STORAGE_KEYS.TEAMS);
 
@@ -593,8 +594,14 @@ async function resetAuction() {
                 fetch('data/players.json'),
                 fetch('data/teams.json')
             ]);
-            players = await playersRes.json();
+            let freshPlayers = await playersRes.json();
             teams = await teamsRes.json();
+
+            // Filter out permanently deleted players
+            const deletedPlayerIds = JSON.parse(localStorage.getItem(STORAGE_KEYS.DELETED_PLAYERS) || '[]');
+            players = freshPlayers.filter(p => !deletedPlayerIds.includes(p.id));
+
+            console.log(`Loaded ${freshPlayers.length} players, filtered to ${players.length} (${deletedPlayerIds.length} deleted)`);
 
             // Reset picked players session
             pickedPlayersInSession = [];
@@ -679,6 +686,40 @@ function addBid(amount) {
     if (!currentPlayer) return;
     currentBid += amount;
     document.getElementById('currentBid').textContent = `₹${currentBid}`;
+    updateBidWarning();
+}
+
+// Check which teams can afford the current bid and show warning
+function updateBidWarning() {
+    const warningEl = document.getElementById('bidWarning');
+    if (!warningEl) return;
+
+    if (!currentPlayer || currentBid === 0) {
+        warningEl.style.display = 'none';
+        return;
+    }
+
+    // Get teams that can still participate (have slots and budget > 0)
+    const activeTeams = teams.filter(t => t.players.length < 7 && t.budget > 0);
+
+    // Check which teams can afford the current bid
+    const teamsCanAfford = activeTeams.filter(t => getMaxBidForTeam(t) >= currentBid);
+    const teamsCantAfford = activeTeams.filter(t => getMaxBidForTeam(t) < currentBid);
+
+    if (teamsCantAfford.length === 0) {
+        warningEl.style.display = 'none';
+        return;
+    }
+
+    if (teamsCanAfford.length === 0) {
+        warningEl.innerHTML = `<span class="warning-icon">⚠️</span> No team can afford ₹${currentBid}!`;
+        warningEl.className = 'bid-warning danger';
+    } else {
+        const cantAffordNames = teamsCantAfford.map(t => t.shortName).join(', ');
+        warningEl.innerHTML = `<span class="warning-icon">⚠️</span> Out: ${cantAffordNames} (${teamsCanAfford.length} teams left)`;
+        warningEl.className = 'bid-warning warning';
+    }
+    warningEl.style.display = 'flex';
 }
 
 function resetToBasePrice() {
@@ -689,6 +730,7 @@ function resetToBasePrice() {
     if (!currentPlayer) return;
     currentBid = currentPlayer.basePrice;
     document.getElementById('currentBid').textContent = `₹${currentBid}`;
+    updateBidWarning();
 }
 
 function applyCustomBid() {
@@ -709,6 +751,7 @@ function applyCustomBid() {
     currentBid = customAmount;
     document.getElementById('currentBid').textContent = `₹${currentBid}`;
     customBidInput.value = '';
+    updateBidWarning();
 }
 
 function markAsSold() {
@@ -853,6 +896,11 @@ async function deletePlayer(playerId) {
     if (!confirm(`Are you sure you want to remove "${player.name}" from the player list? This action cannot be undone.`)) {
         return;
     }
+
+    // Track deleted player ID so it doesn't come back on reset
+    const deletedPlayers = JSON.parse(localStorage.getItem(STORAGE_KEYS.DELETED_PLAYERS) || '[]');
+    deletedPlayers.push(playerId);
+    localStorage.setItem(STORAGE_KEYS.DELETED_PLAYERS, JSON.stringify(deletedPlayers));
 
     // Remove from players array
     players = players.filter(p => p.id !== playerId);
