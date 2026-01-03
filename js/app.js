@@ -577,35 +577,45 @@ function randomPickPlayer() {
     }, 100);
 }
 
-function resetAuction() {
-    if (confirm('Are you sure you want to reset all auction data? This will mark all players as available and reset team rosters.')) {
-        // Reset players
-        players.forEach(p => {
-            p.status = 'available';
-            p.soldTo = null;
-            p.soldPrice = null;
-        });
+async function resetAuction() {
+    if (confirm('Are you sure you want to reset all auction data? This will reload fresh data from JSON files and sync to Supabase.')) {
+        try {
+            // Clear localStorage first
+            localStorage.removeItem(STORAGE_KEYS.PLAYERS);
+            localStorage.removeItem(STORAGE_KEYS.TEAMS);
 
-        // Reset teams - keep only original 3 players
-        teams.forEach(team => {
-            team.budget = 1000000;
-            team.players = team.players.slice(0, 3);
-        });
+            // Load fresh data from JSON files
+            const [playersRes, teamsRes] = await Promise.all([
+                fetch('data/players.json'),
+                fetch('data/teams.json')
+            ]);
+            players = await playersRes.json();
+            teams = await teamsRes.json();
 
-        // Reset picked players session
-        pickedPlayersInSession = [];
+            // Reset picked players session
+            pickedPlayersInSession = [];
 
-        saveData(); // Save to both localStorage and Supabase
+            // Save to localStorage and sync to Supabase
+            saveToLocalStorage();
+            if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+                updateSyncStatus('syncing');
+                await syncToSupabase();
+                updateSyncStatus('synced');
+            }
 
-        // Reset UI
-        document.getElementById('auctionArena').style.display = 'none';
-        document.getElementById('startAuctionBtn').innerHTML = '<span class="btn-icon">▶</span> Start Auction';
-        document.getElementById('startAuctionBtn').disabled = false;
-        currentPlayer = null;
-        currentBid = 0;
+            // Reset UI
+            document.getElementById('auctionArena').style.display = 'none';
+            document.getElementById('startAuctionBtn').innerHTML = '<span class="btn-icon">▶</span> Start Auction';
+            document.getElementById('startAuctionBtn').disabled = false;
+            currentPlayer = null;
+            currentBid = 0;
 
-        initializeApp();
-        alert('Auction has been reset successfully!');
+            initializeApp();
+            alert('Auction has been reset successfully with fresh data!');
+        } catch (error) {
+            console.error('Error resetting auction:', error);
+            alert('Error resetting auction. Please try again.');
+        }
     }
 }
 
