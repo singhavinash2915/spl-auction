@@ -76,9 +76,13 @@ async function loadData() {
                 loadTeamsFromSupabase()
             ]);
 
+            // Get deleted player IDs to filter them out
+            const deletedPlayerIds = JSON.parse(localStorage.getItem(STORAGE_KEYS.DELETED_PLAYERS) || '[]');
+
             if (supabasePlayers && supabasePlayers.length > 0) {
-                players = supabasePlayers;
-                console.log('Loaded players from Supabase:', players.length);
+                // Filter out deleted players
+                players = supabasePlayers.filter(p => !deletedPlayerIds.includes(p.id));
+                console.log('Loaded players from Supabase:', supabasePlayers.length, '-> filtered to:', players.length);
             }
 
             if (supabaseTeams && supabaseTeams.length > 0) {
@@ -610,6 +614,12 @@ async function resetAuction() {
             saveToLocalStorage();
             if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
                 updateSyncStatus('syncing');
+
+                // Delete removed players from Supabase
+                for (const playerId of deletedPlayerIds) {
+                    await deletePlayerFromSupabase(playerId);
+                }
+
                 await syncToSupabase();
                 updateSyncStatus('synced');
             }
