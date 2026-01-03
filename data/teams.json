@@ -117,12 +117,16 @@
     "shortName": "DND",
     "color": "#eab308",
     "logo": "https://lh3.googleusercontent.com/d/1VGF6gtGa_GJfo_cVURFGWXUsB0xLEWP_=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Rahul Yadav", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Yogendra Nayak", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Joydeep Day", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Abhishek Maurya", "flatNo": "", "role": "All-rounder", "viceCaptain": true},
+      {"name": "Sandeep Nayak", "flatNo": "", "role": "Wicket-keeper"},
+      {"name": "Joydeep Day", "flatNo": "", "role": "All-rounder"},
+      {"name": "Yogendra Nayak", "flatNo": "", "role": "All-rounder"},
+      {"name": "Manish R", "flatNo": "", "role": "All-rounder"},
+      {"name": "TBD", "flatNo": "", "role": "TBD"}
     ]
   },
   {
@@ -151,6 +155,24 @@
       {"name": "Shreyas Jain", "flatNo": "E-1501", "role": "All-rounder", "captain": true},
       {"name": "Atharva Jaiswal", "flatNo": "A-1204", "role": "All-rounder", "captain": false},
       {"name": "Akshay Singhal", "flatNo": "E-906", "role": "All-rounder", "captain": false}
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Bat-G-Changer",
+    "shortName": "BGC",
+    "color": "#7c3aed",
+    "logo": "",
+    "budget": 0,
+    "maxPlayers": 7,
+    "players": [
+      {"name": "Santosh Naidu", "flatNo": "", "role": "All-rounder", "captain": true},
+      {"name": "Sambeet Sahoo", "flatNo": "", "role": "All-rounder"},
+      {"name": "Amit Muralkar", "flatNo": "", "role": "All-rounder"},
+      {"name": "Ashish Chanda", "flatNo": "", "role": "All-rounder"},
+      {"name": "Ashish Das", "flatNo": "", "role": "All-rounder"},
+      {"name": "Daksh Nagpal", "flatNo": "", "role": "All-rounder"},
+      {"name": "Jawaaz Sheikh", "flatNo": "", "role": "All-rounder"}
     ]
   }
 ]
