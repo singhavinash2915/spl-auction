@@ -128,6 +128,9 @@
                 <button class="btn btn-secondary admin-only" id="addPlayerBtn" style="display: none;">
                     <span class="btn-icon">+</span> Add Player
                 </button>
+                <button class="btn btn-secondary admin-only" id="addTeamBtn" style="display: none;">
+                    <span class="btn-icon">+</span> Add Team
+                </button>
             </div>
 
             <!-- Current Auction Card -->
@@ -459,6 +462,53 @@
                         <input type="url" id="newPlayerCricHeroes" class="form-input" placeholder="https://cricheroes.com/player/...">
                     </div>
                     <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="addNewPlayer()">Add Player</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Team Modal -->
+    <div class="modal" id="addTeamModal">
+        <div class="modal-overlay" onclick="closeAddTeamModal()"></div>
+        <div class="modal-content modal-medium">
+            <button class="modal-close" aria-label="Close modal" onclick="closeAddTeamModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 20px; text-align: center;">Add New Team</h3>
+                <div class="add-player-form">
+                    <div class="form-group">
+                        <label>Team Name *</label>
+                        <input type="text" id="newTeamName" class="form-input" placeholder="Enter team name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Short Name *</label>
+                            <input type="text" id="newTeamShortName" class="form-input" placeholder="e.g., SS" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Team Color</label>
+                            <input type="color" id="newTeamColor" class="form-input" value="#6366f1" style="height: 42px; padding: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Team Logo (Google Drive Link)</label>
+                        <input type="url" id="newTeamLogo" class="form-input" placeholder="https://drive.google.com/file/d/...">
+                        <small style="color: var(--text-muted); font-size: 0.8rem;">Paste Google Drive share link</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Budget (₹)</label>
+                        <input type="number" id="newTeamBudget" class="form-input" value="1000000" min="0">
+                        <small style="color: var(--text-muted); font-size: 0.8rem;">Set to 0 if team is not participating in auction</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Captain Name</label>
+                        <input type="text" id="newTeamCaptain" class="form-input" placeholder="Enter captain name">
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="addNewTeam()">Add Team</button>
                 </div>
             </div>
         </div>

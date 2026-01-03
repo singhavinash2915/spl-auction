@@ -225,6 +225,25 @@ async function deletePlayerFromSupabase(playerId) {
     }
 }
 
+// Delete a team from Supabase
+async function deleteTeamFromSupabase(teamId) {
+    if (!isSupabaseAvailable()) return false;
+
+    try {
+        const { error } = await supabaseClient
+            .from('teams')
+            .delete()
+            .eq('id', teamId);
+
+        if (error) throw error;
+        console.log('Team deleted from Supabase:', teamId);
+        return true;
+    } catch (error) {
+        console.error('Error deleting team from Supabase:', error);
+        return false;
+    }
+}
+
 // Make functions globally available
 window.isSupabaseAvailable = isSupabaseAvailable;
 window.loadPlayersFromSupabase = loadPlayersFromSupabase;
@@ -237,3 +256,4 @@ window.subscribeToPlayers = subscribeToPlayers;
 window.subscribeToTeams = subscribeToTeams;
 window.insertPlayerToSupabase = insertPlayerToSupabase;
 window.deletePlayerFromSupabase = deletePlayerFromSupabase;
+window.deleteTeamFromSupabase = deleteTeamFromSupabase;

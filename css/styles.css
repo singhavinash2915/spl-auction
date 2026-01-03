@@ -3186,6 +3186,45 @@ body.admin-mode .header-actions .btn-secondary {
     color: white;
 }
 
+/* Team Admin Actions */
+.team-admin-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.team-delete-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.team-delete-btn:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.team-edit-btn {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.team-edit-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
 /* ========================================
    Sync Status Indicator
 ======================================== */

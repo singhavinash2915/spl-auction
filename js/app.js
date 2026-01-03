@@ -391,6 +391,10 @@ function initEventListeners() {
     const addPlayerBtn = document.getElementById('addPlayerBtn');
     if (addPlayerBtn) addPlayerBtn.addEventListener('click', showAddPlayerModal);
 
+    // Add Team Button
+    const addTeamBtn = document.getElementById('addTeamBtn');
+    if (addTeamBtn) addTeamBtn.addEventListener('click', showAddTeamModal);
+
     // Bid Button - 5000
     const bid5000 = document.getElementById('bid5000');
     const resetBid = document.getElementById('resetBidBtn');
@@ -1176,6 +1180,146 @@ window.closeAddPlayerModal = closeAddPlayerModal;
 window.addNewPlayer = addNewPlayer;
 
 // ========================================
+// Add Team Functions
+// ========================================
+function showAddTeamModal() {
+    if (!isAdminMode) {
+        alert('Only Admin can add teams!');
+        return;
+    }
+    document.getElementById('addTeamModal').classList.add('active');
+    document.getElementById('newTeamName').focus();
+}
+
+function closeAddTeamModal() {
+    document.getElementById('addTeamModal').classList.remove('active');
+    // Clear form
+    document.getElementById('newTeamName').value = '';
+    document.getElementById('newTeamShortName').value = '';
+    document.getElementById('newTeamColor').value = '#6366f1';
+    document.getElementById('newTeamLogo').value = '';
+    document.getElementById('newTeamBudget').value = '1000000';
+    document.getElementById('newTeamCaptain').value = '';
+}
+
+async function addNewTeam() {
+    const name = document.getElementById('newTeamName').value.trim();
+    const shortName = document.getElementById('newTeamShortName').value.trim().toUpperCase();
+    const color = document.getElementById('newTeamColor').value;
+    let logo = document.getElementById('newTeamLogo').value.trim();
+    const budget = parseInt(document.getElementById('newTeamBudget').value) || 1000000;
+    const captainName = document.getElementById('newTeamCaptain').value.trim();
+
+    if (!name || !shortName) {
+        alert('Please fill in Team Name and Short Name!');
+        return;
+    }
+
+    // Convert Google Drive URL if provided
+    if (logo) {
+        logo = convertGoogleDriveUrl(logo);
+    }
+
+    // Generate new team ID
+    const maxId = Math.max(...teams.map(t => t.id), 0);
+    const newTeam = {
+        id: maxId + 1,
+        name: name,
+        shortName: shortName,
+        color: color,
+        logo: logo,
+        budget: budget,
+        maxPlayers: 7,
+        players: captainName ? [{ name: captainName, flatNo: '', role: 'All-rounder', captain: true }] : []
+    };
+
+    // Add to teams array
+    teams.push(newTeam);
+
+    // Save to localStorage
+    saveToLocalStorage();
+
+    // Save to Supabase
+    if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+        try {
+            await saveTeamToSupabase(newTeam);
+        } catch (error) {
+            console.error('Error saving team to Supabase:', error);
+        }
+    }
+
+    // Close modal and refresh UI
+    closeAddTeamModal();
+    renderTeams();
+    renderTeamsBudgetGrid();
+    populateTeamSelect();
+
+    alert(`Team "${name}" has been added successfully!`);
+}
+
+// Delete team function (admin only)
+async function deleteTeam(teamId) {
+    if (!isAdminMode) {
+        alert('Only Admin can delete teams!');
+        return;
+    }
+
+    const team = teams.find(t => t.id === teamId);
+    if (!team) return;
+
+    if (team.players.length > 0) {
+        if (!confirm(`Team "${team.name}" has ${team.players.length} players. Are you sure you want to delete this team? Players bought by this team will become available again.`)) {
+            return;
+        }
+    } else {
+        if (!confirm(`Are you sure you want to delete team "${team.name}"? This action cannot be undone.`)) {
+            return;
+        }
+    }
+
+    // Release any sold players back to available
+    players.forEach(p => {
+        if (p.soldTo === teamId) {
+            p.status = 'available';
+            p.soldTo = null;
+            p.soldPrice = null;
+        }
+    });
+
+    // Remove from teams array
+    teams = teams.filter(t => t.id !== teamId);
+
+    // Save to localStorage
+    saveToLocalStorage();
+
+    // Delete from Supabase
+    if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+        try {
+            await deleteTeamFromSupabase(teamId);
+            await syncToSupabase(); // Sync players changes too
+        } catch (error) {
+            console.error('Error deleting team from Supabase:', error);
+        }
+    }
+
+    // Refresh UI
+    renderTeams();
+    renderTeamsBudgetGrid();
+    renderPlayers();
+    renderAuctionPlayers();
+    populateTeamSelect();
+    updateStats();
+
+    alert(`Team "${team.name}" has been deleted.`);
+}
+
+// Make team functions globally available
+window.showAddTeamModal = showAddTeamModal;
+window.closeAddTeamModal = closeAddTeamModal;
+window.addNewTeam = addNewTeam;
+window.deleteTeam = deleteTeam;
+
+// ========================================
 // Render Functions
 // ========================================
 function renderTeamsBudgetGrid() {
@@ -1314,7 +1458,10 @@ function renderTeams() {
                         </div>
                         <div class="team-name">${team.name}</div>
                     </div>
-                    <button class="team-edit-btn admin-only" onclick="openTeamEditModal(${team.id})" style="${isAdminMode ? '' : 'display:none'}">Edit</button>
+                    <div class="team-admin-actions" style="${isAdminMode ? '' : 'display:none'}">
+                        <button class="team-edit-btn admin-only" onclick="openTeamEditModal(${team.id})">Edit</button>
+                        <button class="team-delete-btn admin-only" onclick="deleteTeam(${team.id})">🗑️</button>
+                    </div>
                     <div class="team-budget">
                         <div class="budget-label">Budget</div>
                         <div class="budget-value">₹${team.budget}</div>
