@@ -3160,6 +3160,32 @@ body.admin-mode .header-actions .btn-secondary {
     background: rgba(99, 102, 241, 0.1);
 }
 
+/* Admin Player Actions */
+.admin-player-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+}
+
+.delete-player-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-player-btn:hover {
+    background: var(--danger);
+    color: white;
+}
+
 /* ========================================
    Sync Status Indicator
 ======================================== */

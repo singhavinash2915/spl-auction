@@ -828,6 +828,48 @@ function hideSoldAnimation() {
     document.getElementById('soldOverlay').classList.remove('active');
 }
 
+// Delete player function (admin only)
+async function deletePlayer(playerId) {
+    if (!isAdminMode) {
+        alert('Only Admin can delete players!');
+        return;
+    }
+
+    const player = players.find(p => p.id === playerId);
+    if (!player) return;
+
+    if (!confirm(`Are you sure you want to remove "${player.name}" from the player list? This action cannot be undone.`)) {
+        return;
+    }
+
+    // Remove from players array
+    players = players.filter(p => p.id !== playerId);
+
+    // Save to localStorage
+    saveToLocalStorage();
+
+    // Delete from Supabase
+    if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+        try {
+            await deletePlayerFromSupabase(playerId);
+        } catch (error) {
+            console.error('Error deleting player from Supabase:', error);
+        }
+    }
+
+    // Close modal and refresh UI
+    closePlayerModal();
+    filteredPlayers = [...players];
+    renderPlayers();
+    renderAuctionPlayers();
+    updateStats();
+
+    alert(`"${player.name}" has been removed from the player list.`);
+}
+
+// Make delete function globally available
+window.deletePlayer = deletePlayer;
+
 function populateTeamSelect() {
     const select = document.getElementById('buyingTeam');
     select.innerHTML = '<option value="">-- Select Team --</option>';
@@ -1398,6 +1440,13 @@ function openPlayerModal(playerId) {
                         </button>
                     ` : ''}
                 </div>
+                ${isAdminMode ? `
+                    <div class="admin-player-actions">
+                        <button class="delete-player-btn" onclick="deletePlayer(${player.id})">
+                            🗑️ Remove Player
+                        </button>
+                    </div>
+                ` : ''}
             </div>
             <div class="player-modal-photo">
                 ${player.photo
