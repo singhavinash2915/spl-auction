@@ -5,12 +5,16 @@
     "shortName": "SS",
     "color": "#ef4444",
     "logo": "https://lh3.googleusercontent.com/d/1kdHs-9hJ7QC9yLIpD2NW0PhG_5vBpM2p=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Madhup Jamaiyar", "flatNo": "E-1105", "role": "All-rounder", "captain": true},
-      {"name": "Anil Vishwakarma", "flatNo": "D-1103", "role": "Batsman", "captain": false},
-      {"name": "Rishabh Gupta", "flatNo": "C-1701", "role": "Bowler", "captain": false}
+      {"name": "Anil Vishwakarma", "flatNo": "D-1103", "role": "Batsman"},
+      {"name": "Rishabh Gupta", "flatNo": "C-1701", "role": "Bowler"},
+      {"name": "Bharat Mishra", "flatNo": "", "role": "All-rounder"},
+      {"name": "Niket Nima", "flatNo": "", "role": "All-rounder"},
+      {"name": "Mandar Markandeya", "flatNo": "", "role": "All-rounder"},
+      {"name": "Mayank Nayak", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -19,12 +23,16 @@
     "shortName": "TFB",
     "color": "#3b82f6",
     "logo": "https://lh3.googleusercontent.com/d/1MQcdAkY9urOGguh8bfQJvnSXF0TvxHnN=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Avinash Singh", "flatNo": "E-2001", "role": "All-rounder", "captain": true},
-      {"name": "Rajat (Cheeku)", "flatNo": "G-1704", "role": "Batsman", "captain": false},
-      {"name": "Sumit Singh", "flatNo": "G-1901", "role": "Bowler", "captain": false}
+      {"name": "Rajat (Cheeku)", "flatNo": "G-1704", "role": "Batsman"},
+      {"name": "Sumit Singh", "flatNo": "G-1901", "role": "Bowler"},
+      {"name": "Roshan Gupta", "flatNo": "", "role": "All-rounder"},
+      {"name": "Sudhakar Dama", "flatNo": "", "role": "All-rounder"},
+      {"name": "Nikhil Bhan", "flatNo": "", "role": "All-rounder"},
+      {"name": "Amol Pagare", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -33,12 +41,16 @@
     "shortName": "PP",
     "color": "#10b981",
     "logo": "https://lh3.googleusercontent.com/d/1yfMa-0gJZGk03VoeYB_Rvv-bjkjEzCOa=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Dhawal Jain", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Gourav Shrivastava", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Vaibhav Shrivastava", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Gourav Shrivastava", "flatNo": "", "role": "Batsman"},
+      {"name": "Vaibhav Shrivastava", "flatNo": "", "role": "Bowler"},
+      {"name": "Tejas Vaidya", "flatNo": "", "role": "All-rounder"},
+      {"name": "Ankur Vashist", "flatNo": "", "role": "All-rounder"},
+      {"name": "Bharat Pathak", "flatNo": "", "role": "All-rounder"},
+      {"name": "Ravi Sinha", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -47,12 +59,16 @@
     "shortName": "AS",
     "color": "#8b5cf6",
     "logo": "https://lh3.googleusercontent.com/d/1-0YCv4ZEHS5YNwhBTfqNppYmKPmQ0nML=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Saurabh Lele", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Vyankatesh K", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Sushant Kadam", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Vyankatesh K", "flatNo": "", "role": "Batsman"},
+      {"name": "Sushant Kadam", "flatNo": "", "role": "Bowler"},
+      {"name": "Anand Vijay", "flatNo": "", "role": "All-rounder"},
+      {"name": "Prasad Dudhe", "flatNo": "", "role": "All-rounder"},
+      {"name": "Ramakant Singh", "flatNo": "", "role": "All-rounder"},
+      {"name": "Bhagwat Bedade", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -61,12 +77,16 @@
     "shortName": "S6",
     "color": "#f59e0b",
     "logo": "https://lh3.googleusercontent.com/d/1tv-kN8gGwnKgswGag5CpgQXrWZMXnUoB=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Soumyaranjan Mohapatra", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Niraj", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Aprmay Kumar", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Niraj Parmeshwar", "flatNo": "", "role": "Batsman"},
+      {"name": "Aprmay Kumar", "flatNo": "", "role": "Bowler"},
+      {"name": "Varun Gupta", "flatNo": "", "role": "All-rounder"},
+      {"name": "Pratik Patil", "flatNo": "", "role": "All-rounder"},
+      {"name": "Atharva Dhamse", "flatNo": "", "role": "All-rounder"},
+      {"name": "Jagadeesh", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -75,12 +95,16 @@
     "shortName": "E7",
     "color": "#06b6d4",
     "logo": "https://lh3.googleusercontent.com/d/1rWXxpoVatxzYXH6KFipZZ2gTjXemdBAw=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Nikhil Tandon", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Rohan Rao", "flatNo": "B-1603", "role": "Batsman", "captain": false},
-      {"name": "Shaan Shaikh", "flatNo": "B-504", "role": "Bowler", "captain": false}
+      {"name": "Rohan Rao", "flatNo": "B-1603", "role": "Batsman"},
+      {"name": "Shaan Shaikh", "flatNo": "B-504", "role": "Bowler"},
+      {"name": "Yogesh Pithale", "flatNo": "", "role": "All-rounder"},
+      {"name": "Jayesh Biradar", "flatNo": "", "role": "All-rounder"},
+      {"name": "Shashank Shukla", "flatNo": "", "role": "All-rounder"},
+      {"name": "Piyush Pankaj", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -89,12 +113,16 @@
     "shortName": "7R",
     "color": "#ec4899",
     "logo": "https://lh3.googleusercontent.com/d/1xRUVhFh23yD8RaTdq7YiD8mdUrO0-Q2T=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Harshit Upadhyay", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Honey Porwal", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Aditya Jaiswal", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Honey Porwal", "flatNo": "", "role": "Batsman"},
+      {"name": "Aditya Jaiswal", "flatNo": "", "role": "Bowler"},
+      {"name": "Shubham Patil", "flatNo": "", "role": "All-rounder"},
+      {"name": "Abhishek Bhatt", "flatNo": "", "role": "All-rounder"},
+      {"name": "Prathmesh Kesarkar", "flatNo": "", "role": "All-rounder"},
+      {"name": "Ankit Aswale", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -103,12 +131,16 @@
     "shortName": "BZ",
     "color": "#84cc16",
     "logo": "https://lh3.googleusercontent.com/d/1hYTWk_tRV5bHiVYrdJ5A5p1yTIai4Ho6=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Adarsh Dwivedi", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Arpan Thakur", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Sushil Yadav", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Arpan Thakur", "flatNo": "", "role": "Batsman"},
+      {"name": "Sushil Yadav", "flatNo": "", "role": "Bowler"},
+      {"name": "Gopinath C", "flatNo": "", "role": "All-rounder"},
+      {"name": "Srinivas Tallari", "flatNo": "", "role": "All-rounder"},
+      {"name": "Anshul Shrivastava", "flatNo": "", "role": "All-rounder"},
+      {"name": "Amit Yadav", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -135,12 +167,16 @@
     "shortName": "TA",
     "color": "#64748b",
     "logo": "https://lh3.googleusercontent.com/d/15vjqfToqMy1YredEV0hWggmc_joKoN4p=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Naveen Gaurav", "flatNo": "", "role": "All-rounder", "captain": true},
-      {"name": "Lokesh Goel", "flatNo": "", "role": "Batsman", "captain": false},
-      {"name": "Aditya Purohit", "flatNo": "", "role": "Bowler", "captain": false}
+      {"name": "Lokesh Goel", "flatNo": "", "role": "Batsman"},
+      {"name": "Aditya Purohit", "flatNo": "", "role": "Bowler"},
+      {"name": "Satya Dwivedi", "flatNo": "", "role": "All-rounder"},
+      {"name": "Bhanu Pratap Singh", "flatNo": "", "role": "All-rounder"},
+      {"name": "Aditya Pathak", "flatNo": "", "role": "All-rounder"},
+      {"name": "Avinash Saxena", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
@@ -149,12 +185,16 @@
     "shortName": "DDDD",
     "color": "#f97316",
     "logo": "https://lh3.googleusercontent.com/d/1Xre3FgTsVsRNZ3IM03DxMlCEvoV2IEnG=w400",
-    "budget": 1000000,
+    "budget": 0,
     "maxPlayers": 7,
     "players": [
       {"name": "Shreyas Jain", "flatNo": "E-1501", "role": "All-rounder", "captain": true},
-      {"name": "Atharva Jaiswal", "flatNo": "A-1204", "role": "All-rounder", "captain": false},
-      {"name": "Akshay Singhal", "flatNo": "E-906", "role": "All-rounder", "captain": false}
+      {"name": "Atharva Jaiswal", "flatNo": "A-1204", "role": "All-rounder"},
+      {"name": "Akshay Singhal", "flatNo": "E-906", "role": "All-rounder"},
+      {"name": "Amit Pandey", "flatNo": "", "role": "All-rounder"},
+      {"name": "Kaushik Raj", "flatNo": "", "role": "All-rounder"},
+      {"name": "Rahul Verma", "flatNo": "", "role": "All-rounder"},
+      {"name": "Keyur Sanghvi", "flatNo": "", "role": "All-rounder"}
     ]
   },
   {
