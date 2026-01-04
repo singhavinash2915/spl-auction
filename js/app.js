@@ -307,10 +307,15 @@ function updateAdminUI() {
         document.body.classList.remove('admin-mode');
     }
 
-    // Update team admin actions visibility (these have inline styles from renderTeams)
+    // Update team admin actions visibility
     document.querySelectorAll('.team-admin-actions').forEach(el => {
-        el.style.display = isAdminMode ? '' : 'none';
+        el.style.display = isAdminMode ? 'flex' : 'none';
     });
+
+    // Re-render teams to update admin buttons
+    if (typeof renderTeams === 'function' && teams && teams.length > 0) {
+        renderTeams();
+    }
 }
 
 function showAdminLoginModal() {
@@ -1606,9 +1611,9 @@ function renderTeams() {
                         </div>
                         <div class="team-name">${team.name}</div>
                     </div>
-                    <div class="team-admin-actions" style="${isAdminMode ? '' : 'display:none'}">
-                        <button class="team-edit-btn admin-only" onclick="openTeamEditModal(${team.id})">Edit</button>
-                        <button class="team-delete-btn admin-only" onclick="deleteTeam(${team.id})">🗑️</button>
+                    <div class="team-admin-actions" style="${isAdminMode ? 'display:flex' : 'display:none'}">
+                        <button class="team-edit-btn" onclick="openTeamEditModal(${team.id})">Edit</button>
+                        <button class="team-delete-btn" onclick="deleteTeam(${team.id})">🗑️</button>
                     </div>
                     <div class="team-budget">
                         <div class="budget-label">Budget</div>
