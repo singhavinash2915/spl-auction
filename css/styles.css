@@ -445,6 +445,16 @@ body {
     background: #dc2626;
 }
 
+.btn-warning {
+    background: var(--warning);
+    color: #000;
+    padding: 16px 32px;
+}
+
+.btn-warning:hover {
+    background: #d97706;
+}
+
 .btn-icon {
     font-size: 1.2em;
 }

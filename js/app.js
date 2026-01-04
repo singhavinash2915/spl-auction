@@ -645,6 +645,51 @@ async function resetAuction() {
     }
 }
 
+// Force load teams from JSON file and sync to Supabase (without resetting players/auction state)
+async function forceLoadFromJSON() {
+    if (!isAdminMode) {
+        alert('Only Admin can force load data!');
+        return;
+    }
+
+    if (!confirm('This will load teams from JSON file and sync to Supabase. Current player auction state will be preserved. Continue?')) {
+        return;
+    }
+
+    try {
+        updateSyncStatus('syncing');
+
+        // Load fresh teams from JSON
+        const teamsRes = await fetch('data/teams.json');
+        teams = await teamsRes.json();
+
+        console.log('Loaded teams from JSON:', teams.length);
+
+        // Save to localStorage
+        saveToLocalStorage();
+
+        // Sync to Supabase
+        if (typeof isSupabaseAvailable === 'function' && isSupabaseAvailable()) {
+            await saveAllTeamsToSupabase(teams);
+            updateSyncStatus('synced');
+        }
+
+        // Refresh UI
+        renderTeams();
+        renderTeamsBudgetGrid();
+        populateTeamSelect();
+
+        alert('Teams loaded from JSON and synced to Supabase successfully!');
+    } catch (error) {
+        console.error('Error loading from JSON:', error);
+        updateSyncStatus('error');
+        alert('Error loading from JSON. Please try again.');
+    }
+}
+
+// Make function globally available
+window.forceLoadFromJSON = forceLoadFromJSON;
+
 function selectPlayerForAuction(player) {
     // Allow both 'available' and 'unsold' players to be selected for auction
     if (player.status !== 'available' && player.status !== 'unsold') return;
