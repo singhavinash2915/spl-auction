@@ -291,30 +291,20 @@ function updateSyncStatus(status) {
 // Admin Mode Functions
 // ========================================
 function updateAdminUI() {
-    const adminControls = document.querySelectorAll('.admin-only');
     const adminStatus = document.getElementById('adminStatus');
     const adminLoginBtn = document.getElementById('adminLoginBtn');
 
     if (isAdminMode) {
-        adminControls.forEach(el => {
-            // Use inline-flex for buttons, block for other elements
-            if (el.tagName === 'BUTTON') {
-                el.style.display = 'inline-flex';
-            } else {
-                el.style.display = 'block';
-            }
-        });
         if (adminStatus) adminStatus.textContent = 'Admin Mode Active';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Logout Admin';
         document.body.classList.add('admin-mode');
     } else {
-        adminControls.forEach(el => el.style.display = 'none');
         if (adminStatus) adminStatus.textContent = 'View Only Mode';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Admin Login';
         document.body.classList.remove('admin-mode');
     }
 
-    // Update team admin actions visibility (these have inline styles)
+    // Update team admin actions visibility (these have inline styles from renderTeams)
     document.querySelectorAll('.team-admin-actions').forEach(el => {
         el.style.display = isAdminMode ? '' : 'none';
     });
