@@ -293,17 +293,25 @@ function updateSyncStatus(status) {
 function updateAdminUI() {
     const adminStatus = document.getElementById('adminStatus');
     const adminLoginBtn = document.getElementById('adminLoginBtn');
-    const forceSyncBtn = document.getElementById('forceSyncBtn');
+    const forceLoadBtn = document.getElementById('forceLoadBtn');
+
+    console.log('updateAdminUI called, isAdminMode:', isAdminMode);
 
     if (isAdminMode) {
         if (adminStatus) adminStatus.textContent = 'Admin Mode Active';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Logout Admin';
-        if (forceSyncBtn) forceSyncBtn.style.display = 'inline-flex';
+        if (forceLoadBtn) {
+            forceLoadBtn.style.display = 'inline-block';
+            console.log('forceLoadBtn shown');
+        }
         document.body.classList.add('admin-mode');
     } else {
         if (adminStatus) adminStatus.textContent = 'View Only Mode';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Admin Login';
-        if (forceSyncBtn) forceSyncBtn.style.display = 'none';
+        if (forceLoadBtn) {
+            forceLoadBtn.style.display = 'none';
+            console.log('forceLoadBtn hidden');
+        }
         document.body.classList.remove('admin-mode');
     }
 
