@@ -529,15 +529,15 @@ function randomPickPlayer() {
         return;
     }
 
-    // Get available players that haven't been picked in this session
+    // Get available or unsold players that haven't been picked in this session
     const availablePlayers = players.filter(p =>
-        p.status === 'available' && !pickedPlayersInSession.includes(p.id)
+        (p.status === 'available' || p.status === 'unsold') && !pickedPlayersInSession.includes(p.id)
     );
 
     if (availablePlayers.length === 0) {
         // Reset session if all have been picked
         pickedPlayersInSession = [];
-        const allAvailable = players.filter(p => p.status === 'available');
+        const allAvailable = players.filter(p => p.status === 'available' || p.status === 'unsold');
         if (allAvailable.length === 0) {
             alert('No available players left!');
             return;
@@ -641,7 +641,8 @@ async function resetAuction() {
 }
 
 function selectPlayerForAuction(player) {
-    if (player.status !== 'available') return;
+    // Allow both 'available' and 'unsold' players to be selected for auction
+    if (player.status !== 'available' && player.status !== 'unsold') return;
 
     currentPlayer = player;
     currentBid = player.basePrice;
@@ -981,7 +982,8 @@ function openTeamEditModal(teamId) {
     if (!editingTeam) return;
 
     const modalBody = document.getElementById('teamEditModalBody');
-    const availablePlayers = players.filter(p => p.status === 'available');
+    // Include both available and unsold players for manual addition
+    const availablePlayers = players.filter(p => p.status === 'available' || p.status === 'unsold');
 
     modalBody.innerHTML = `
         <div class="team-edit-header">
@@ -1094,7 +1096,8 @@ function addPlayerToTeam(teamId) {
     }
 
     const player = players.find(p => p.id === playerId);
-    if (!player || player.status !== 'available') {
+    // Allow both available and unsold players to be added to teams
+    if (!player || (player.status !== 'available' && player.status !== 'unsold')) {
         alert('Player is not available!');
         return;
     }
@@ -1428,13 +1431,14 @@ function renderAuctionPlayers() {
     const grid = document.getElementById('auctionPlayersGrid');
     if (!grid) return;
 
-    const availablePlayers = players.filter(p => p.status === 'available');
+    // Include both available and unsold players for auction
+    const auctionablePlayers = players.filter(p => p.status === 'available' || p.status === 'unsold');
 
     const countEl = document.getElementById('availableCount');
-    if (countEl) countEl.textContent = `(${availablePlayers.length})`;
+    if (countEl) countEl.textContent = `(${auctionablePlayers.length})`;
 
-    grid.innerHTML = availablePlayers.map(player => `
-        <div class="player-mini-card ${player.status !== 'available' ? 'sold' : ''}"
+    grid.innerHTML = auctionablePlayers.map(player => `
+        <div class="player-mini-card ${player.status === 'unsold' ? 'unsold' : ''}"
              data-id="${player.id}"
              onclick="selectPlayerForAuction(players.find(p => p.id === ${player.id}))">
             <div class="mini-avatar" style="background: ${player.photo ? 'transparent' : getAvatarColor(player.role)}">
@@ -1443,6 +1447,7 @@ function renderAuctionPlayers() {
             <div class="mini-name">${player.name}</div>
             <div class="mini-role">${player.role}</div>
             <div class="mini-price">₹${player.basePrice}</div>
+            ${player.status === 'unsold' ? '<div class="mini-unsold-badge">Unsold</div>' : ''}
         </div>
     `).join('');
 }

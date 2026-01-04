@@ -801,6 +801,28 @@ body {
     font-weight: 700;
 }
 
+/* Unsold players in auction grid - can be re-auctioned */
+.player-mini-card.unsold {
+    border-color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.player-mini-card.unsold:hover {
+    border-color: var(--warning);
+    background: rgba(245, 158, 11, 0.2);
+}
+
+.mini-unsold-badge {
+    display: block;
+    margin-top: 4px;
+    padding: 2px 6px;
+    background: var(--warning);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #000;
+}
+
 .player-mini-card.selected {
     border-color: var(--primary);
     background: rgba(99, 102, 241, 0.2);
