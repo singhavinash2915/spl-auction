@@ -400,12 +400,12 @@ function initEventListeners() {
     const addTeamBtn = document.getElementById('addTeamBtn');
     if (addTeamBtn) addTeamBtn.addEventListener('click', showAddTeamModal);
 
-    // Bid Button - 5000
-    const bid5000 = document.getElementById('bid5000');
+    // Bid Button - 10000
+    const bid10000 = document.getElementById('bid10000');
     const resetBid = document.getElementById('resetBidBtn');
     const customBidBtn = document.getElementById('customBidBtn');
 
-    if (bid5000) bid5000.addEventListener('click', () => addBid(5000));
+    if (bid10000) bid10000.addEventListener('click', () => addBid(10000));
     if (resetBid) resetBid.addEventListener('click', resetToBasePrice);
     if (customBidBtn) customBidBtn.addEventListener('click', applyCustomBid);
 
