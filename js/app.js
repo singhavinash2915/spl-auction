@@ -293,14 +293,17 @@ function updateSyncStatus(status) {
 function updateAdminUI() {
     const adminStatus = document.getElementById('adminStatus');
     const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const forceSyncBtn = document.getElementById('forceSyncBtn');
 
     if (isAdminMode) {
         if (adminStatus) adminStatus.textContent = 'Admin Mode Active';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Logout Admin';
+        if (forceSyncBtn) forceSyncBtn.style.display = 'inline-flex';
         document.body.classList.add('admin-mode');
     } else {
         if (adminStatus) adminStatus.textContent = 'View Only Mode';
         if (adminLoginBtn) adminLoginBtn.textContent = 'Admin Login';
+        if (forceSyncBtn) forceSyncBtn.style.display = 'none';
         document.body.classList.remove('admin-mode');
     }
 
@@ -1022,8 +1025,8 @@ function openTeamEditModal(teamId) {
     if (!editingTeam) return;
 
     const modalBody = document.getElementById('teamEditModalBody');
-    // Include both available and unsold players for manual addition
-    const availablePlayers = players.filter(p => p.status === 'available' || p.status === 'unsold');
+    // Show ALL players for manual addition (admin can add any player)
+    const allPlayers = players;
 
     modalBody.innerHTML = `
         <div class="team-edit-header">
@@ -1063,9 +1066,9 @@ function openTeamEditModal(teamId) {
         <div class="add-player-section">
             <h4>Add Player Manually</h4>
             <select class="add-player-select" id="addPlayerSelect">
-                <option value="">-- Select Available Player --</option>
-                ${availablePlayers.map(p => `
-                    <option value="${p.id}">${p.name} (${p.flatNo || '-'}) - ${p.role} - Base: ₹${p.basePrice}</option>
+                <option value="">-- Select Player --</option>
+                ${allPlayers.map(p => `
+                    <option value="${p.id}">${p.name} (${p.flatNo || '-'}) - ${p.role} - ${p.status.toUpperCase()}${p.soldTo ? ` (${teams.find(t => t.id === p.soldTo)?.shortName || ''})` : ''}</option>
                 `).join('')}
             </select>
             <div class="add-player-price">
@@ -1136,10 +1139,28 @@ function addPlayerToTeam(teamId) {
     }
 
     const player = players.find(p => p.id === playerId);
-    // Allow both available and unsold players to be added to teams
-    if (!player || (player.status !== 'available' && player.status !== 'unsold')) {
-        alert('Player is not available!');
+    if (!player) {
+        alert('Player not found!');
         return;
+    }
+
+    // If player is already sold to another team, warn admin
+    if (player.status === 'sold' && player.soldTo !== teamId) {
+        const previousTeam = teams.find(t => t.id === player.soldTo);
+        if (!confirm(`${player.name} is already sold to ${previousTeam?.name || 'another team'}. Move to ${team.name}?`)) {
+            return;
+        }
+        // Remove from previous team
+        if (previousTeam) {
+            const playerIndex = previousTeam.players.findIndex(p => p.name === player.name);
+            if (playerIndex > -1) {
+                const removedPlayer = previousTeam.players[playerIndex];
+                if (removedPlayer.soldPrice) {
+                    previousTeam.budget += removedPlayer.soldPrice;
+                }
+                previousTeam.players.splice(playerIndex, 1);
+            }
+        }
     }
 
     if (price > team.budget) {
