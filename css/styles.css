@@ -70,6 +70,15 @@ body {
     overflow-x: hidden;
 }
 
+/* Admin-only elements hidden by default */
+.admin-only {
+    display: none !important;
+}
+
+body.admin-mode .admin-only {
+    display: inline-flex !important;
+}
+
 .container {
     max-width: 1280px;
     margin: 0 auto;
