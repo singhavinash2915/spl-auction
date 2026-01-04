@@ -1455,6 +1455,8 @@ function filterAndRenderPlayers() {
             matchesFilter = player.status === 'available';
         } else if (currentFilter === 'sold') {
             matchesFilter = player.status === 'sold';
+        } else if (currentFilter === 'unsold') {
+            matchesFilter = player.status === 'unsold';
         } else if (currentFilter !== 'all') {
             matchesFilter = player.role === currentFilter;
         }
