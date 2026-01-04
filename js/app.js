@@ -313,6 +313,11 @@ function updateAdminUI() {
         if (adminLoginBtn) adminLoginBtn.textContent = 'Admin Login';
         document.body.classList.remove('admin-mode');
     }
+
+    // Update team admin actions visibility (these have inline styles)
+    document.querySelectorAll('.team-admin-actions').forEach(el => {
+        el.style.display = isAdminMode ? '' : 'none';
+    });
 }
 
 function showAdminLoginModal() {
